@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -12,9 +13,9 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 
 public class Reader {
-	private static Glasses[] glasses = null;
+	private static ArrayList<Glasses> glasses = null;
 
-	public static Glasses[] readFile(String fileName){
+	public static ArrayList<Glasses> readFile(String fileName){
 		if(glasses == null){
 			File file = new File(fileName);
 			POIFSFileSystem fs = null;
@@ -39,7 +40,7 @@ public class Reader {
 			sheet =  wb.getSheetAt(0);
 			rows = sheet.getPhysicalNumberOfRows();
 
-			glasses = new Glasses[rows - 1];
+			glasses = new ArrayList<Glasses>();
 
 			int number;
 			double Rsph;
@@ -53,6 +54,8 @@ public class Reader {
 
 			row = sheet.getRow(1);
 			int i = 2;
+			
+			boolean empty = false;
 
 			do{
 				try{
@@ -61,6 +64,12 @@ public class Reader {
 					number = 0;
 				}
 				try{
+					if(row.getCell(1).toString().equals("")){
+						empty = true;
+					}
+					else{
+						empty = false;
+					}
 					Rsph = Double.valueOf(row.getCell(1).toString());
 				} catch (NumberFormatException e){
 					Rsph = 0.0;
@@ -93,7 +102,9 @@ public class Reader {
 				frame = row.getCell(7).toString();
 				lens = row.getCell(8).toString();
 
-				glasses[i - 2] = new Glasses(number, Rsph, Rcyl, Raxis, Lsph, Lcyl, Laxis, frame, lens);
+				if(!empty){
+					glasses.add(new Glasses(number, Rsph, Rcyl, Raxis, Lsph, Lcyl, Laxis, frame, lens));
+				}
 
 				i = i + 1;
 				row = sheet.getRow(i);

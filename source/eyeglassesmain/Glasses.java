@@ -30,7 +30,7 @@ public class Glasses {
 		return String.format("%d,%f,%f,%d,%f,%f,%d,%s,%s",number, Rsph, Rcyl, Raxis, Rsph, Rcyl, Raxis, frame, lens);
 	}
 	
-	public double getNumber(){
+	public int getNumber(){
 		return number;
 	}
 
@@ -42,7 +42,7 @@ public class Glasses {
 		return Rcyl;
 	}
 
-	public double getRaxis() {
+	public int getRaxis() {
 		return Raxis;
 	}
 
@@ -54,7 +54,7 @@ public class Glasses {
 		return Lcyl;
 	}
 
-	public double getLaxis() {
+	public int getLaxis() {
 		return Laxis;
 	}
 
