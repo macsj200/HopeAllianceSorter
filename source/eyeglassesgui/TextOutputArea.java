@@ -23,4 +23,8 @@ public class TextOutputArea extends Box implements GuiWritable {
 		outputArea.append(s);
 		outputArea.setCaretPosition(outputArea.getDocument().getLength());
 	}
+	
+	public void clear(){
+		outputArea.setText("");
+	}
 }

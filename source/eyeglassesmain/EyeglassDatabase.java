@@ -13,8 +13,12 @@ public class EyeglassDatabase {
 		return glasses;
 	}
 
-	public ArrayList<Integer> searchRsph(double rsph){
+	public ArrayList<Integer> searchRsph(double rsph) throws NumberFormatException{
 		ArrayList<Integer> hits = new ArrayList<Integer>();
+		if(rsph < 0){
+			throw new NumberFormatException();
+		}
+		
 		for(int i = 0; i < glasses.size(); i++){
 			if(rsph == 0){
 				if(isBetween(glasses.get(i).getRsph(), rsph - 0.25, rsph + 0.25, true)){
@@ -73,7 +77,10 @@ public class EyeglassDatabase {
 	}
 	
 	
-	public ArrayList<Integer> searchLsph(double lsph){
+	public ArrayList<Integer> searchLsph(double lsph) throws NumberFormatException{
+		if(lsph < 0){
+			throw new NumberFormatException();
+		}
 		ArrayList<Integer> hits = new ArrayList<Integer>();
 		for(int i = 0; i < glasses.size(); i++){
 			if(lsph == 0){
