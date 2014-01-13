@@ -8,6 +8,7 @@ public class EyeglassDatabase {
 
 	public EyeglassDatabase(File file){
 		glasses = Reader.readFile(file);
+		System.out.println("Database read into RAM");
 	}
 	
 	public ArrayList<Glasses> getGlasses(){
@@ -17,6 +18,7 @@ public class EyeglassDatabase {
 	public ArrayList<Integer> searchRsph(double rsph) throws NumberFormatException{
 		ArrayList<Integer> hits = new ArrayList<Integer>();
 		if(rsph < 0){
+			System.out.println("rsph is less than 0, use rsph and rcyl");
 			throw new NumberFormatException();
 		}
 		
@@ -83,6 +85,7 @@ public class EyeglassDatabase {
 	
 	public ArrayList<Integer> searchLsph(double lsph) throws NumberFormatException{
 		if(lsph < 0){
+			System.out.println("lsph is less than 0, use lsph and lcyl");
 			throw new NumberFormatException();
 		}
 		ArrayList<Integer> hits = new ArrayList<Integer>();

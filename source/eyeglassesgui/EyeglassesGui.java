@@ -48,29 +48,35 @@ public class EyeglassesGui extends JFrame{
 		fileChooser = new JFileChooser();
 		try {
 			prop.load(new FileInputStream(configFile));
-
+			System.out.println("Config file exists, reading");
+			System.out.println("Starting in " + prop.getProperty("dir"));
 			fileChooser.setCurrentDirectory(new File(prop.getProperty("dir")));
 		} catch (FileNotFoundException e) {
-
+			System.out.println("Couldn't find config file.  Loading default");
 		} catch (IOException e) {
-
+			System.out.println("Couldn't load config file.  Loading default");
 		} finally{
 			file = promptForFile();
+			System.out.println("Sucessfully opened file");
 		}
 
 		if(file == null){
+			System.out.println("File selection failed");
 			JOptionPane.showMessageDialog(this, "Couldn't open file.  Exiting.","Error", JOptionPane.ERROR_MESSAGE);
 			System.exit(-1);
 		}
 
+		System.out.println("Writing last directory to config: " + file.getParent());
 		prop.setProperty("dir", file.getParent());
+
 
 		try {
 			prop.store(new FileOutputStream(".config.properties"), null);
+			System.out.println("Stored config");
 		} catch (FileNotFoundException e) {
-
+			System.out.println("Couldn't save config");
 		} catch (IOException e) {
-
+			System.out.println("Couldn't save config");
 		}
 
 		setLayout(new FlowLayout());
@@ -85,6 +91,7 @@ public class EyeglassesGui extends JFrame{
 		(new Thread(new Runnable(){
 			public void run(){
 				database = new EyeglassDatabase(file);
+				System.out.println("read database");
 
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
@@ -95,7 +102,7 @@ public class EyeglassesGui extends JFrame{
 		})).start();
 
 	}
-	
+
 	private class Searcher implements Runnable{
 		public void run(){
 			SwingUtilities.invokeLater(new Runnable(){
@@ -103,14 +110,35 @@ public class EyeglassesGui extends JFrame{
 					searchButton.setEnabled(false);
 				}
 			});
-			resultList = searchAndCompare();
-			SwingUtilities.invokeLater(new Runnable(){
-				public void run(){
-					results.clear();
-					writeArrayList(resultList);
-					searchButton.setEnabled(true);
-				}
-			});
+			boolean worked = false;
+
+			try{
+				resultList = searchAndCompare();
+				System.out.println("Search completed.  Results: " + resultList.size());
+				worked = true;
+			} catch (NumberFormatException e){
+				System.out.println("Couldn't process search parameters.");
+				JOptionPane.showMessageDialog(null, "Couldn't process search parameters.","Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			if(worked){
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						results.clear();
+						writeArrayList(resultList);
+						searchButton.setEnabled(true);
+					}
+				});
+			} 
+			else{
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						results.clear();
+						results.write("Error");
+						searchButton.setEnabled(true);
+					}
+				});
+			}
 		}
 	}
 
@@ -120,6 +148,7 @@ public class EyeglassesGui extends JFrame{
 
 		searchButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
+				System.out.println("Start search");
 				(new Thread(new Searcher())).start();
 			}
 		});
@@ -178,33 +207,37 @@ public class EyeglassesGui extends JFrame{
 		ArrayList<ArrayList<Integer>> lists = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> results = null;
 
-		if(Rsph.getCheckBox().isSelected() && Rcyl.getCheckBox().isSelected()){
-			RsphAndRcylResults = database.searchRsphAndRcyl(Double.valueOf(Rsph.getInput().getText()), Double.valueOf(Rcyl.getInput().getText()));
-		}
-		else if (Rsph.getCheckBox().isSelected()){
-			RsphResults = database.searchRsph(Double.valueOf(Rsph.getInput().getText()));
-		}
-		else if (Rcyl.getCheckBox().isSelected()){
-			RcylResults = database.searchRcyl(Double.valueOf(Rcyl.getInput().getText()));
-		}
+		try{
+			if(Rsph.getCheckBox().isSelected() && Rcyl.getCheckBox().isSelected()){
+				RsphAndRcylResults = database.searchRsphAndRcyl(Double.valueOf(Rsph.getInput().getText()), Double.valueOf(Rcyl.getInput().getText()));
+			}
+			else if (Rsph.getCheckBox().isSelected()){
+				RsphResults = database.searchRsph(Double.valueOf(Rsph.getInput().getText()));
+			}
+			else if (Rcyl.getCheckBox().isSelected()){
+				RcylResults = database.searchRcyl(Double.valueOf(Rcyl.getInput().getText()));
+			}
 
-		if(Raxis.getCheckBox().isSelected()){
-			RaxisResults = database.searchRaxis(Integer.valueOf(Raxis.getInput().getText()));
-		}
+			if(Raxis.getCheckBox().isSelected()){
+				RaxisResults = database.searchRaxis(Integer.valueOf(Raxis.getInput().getText()));
+			}
 
 
-		if(Lsph.getCheckBox().isSelected() && Lcyl.getCheckBox().isSelected()){
-			LsphAndLcylResults = database.searchLsphAndLcyl(Double.valueOf(Lsph.getInput().getText()), Double.valueOf(Lcyl.getInput().getText()));
-		}
-		else if (Lsph.getCheckBox().isSelected()){
-			LsphResults = database.searchLsph(Double.valueOf(Lsph.getInput().getText()));
-		}
-		else if (Lcyl.getCheckBox().isSelected()){
-			LcylResults = database.searchLcyl(Double.valueOf(Lcyl.getInput().getText()));
-		}
+			if(Lsph.getCheckBox().isSelected() && Lcyl.getCheckBox().isSelected()){
+				LsphAndLcylResults = database.searchLsphAndLcyl(Double.valueOf(Lsph.getInput().getText()), Double.valueOf(Lcyl.getInput().getText()));
+			}
+			else if (Lsph.getCheckBox().isSelected()){
+				LsphResults = database.searchLsph(Double.valueOf(Lsph.getInput().getText()));
+			}
+			else if (Lcyl.getCheckBox().isSelected()){
+				LcylResults = database.searchLcyl(Double.valueOf(Lcyl.getInput().getText()));
+			}
 
-		if(Laxis.getCheckBox().isSelected()){
-			LaxisResults = database.searchLaxis(Integer.valueOf(Laxis.getInput().getText()));
+			if(Laxis.getCheckBox().isSelected()){
+				LaxisResults = database.searchLaxis(Integer.valueOf(Laxis.getInput().getText()));
+			}
+		} catch (NumberFormatException e){
+			throw e;
 		}
 
 		lists.add(RsphResults);

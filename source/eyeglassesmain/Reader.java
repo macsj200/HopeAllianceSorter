@@ -54,12 +54,16 @@ public class Reader {
 			row = sheet.getRow(1);
 			int i = 2;
 			
+			int blanks = 0;
+			int empties = 0;
+			
 			boolean empty = false;
 
 			do{
 				try{
 					number = Integer.valueOf(row.getCell(0).toString().split("\\.")[0]);
 				} catch (NumberFormatException e){
+					blanks = blanks + 1;
 					number = 0;
 				}
 				try{
@@ -71,43 +75,62 @@ public class Reader {
 					}
 					Rsph = Double.valueOf(row.getCell(1).toString());
 				} catch (NumberFormatException e){
+					blanks = blanks + 1;
 					Rsph = 0.0;
 				}
 				try{
 					Rcyl = Double.valueOf(row.getCell(2).toString());
 				} catch (NumberFormatException e){
+					blanks = blanks + 1;
 					Rcyl = 0.0;
 				}
 				try{
 					Raxis = Integer.valueOf(row.getCell(3).toString().split("\\.")[0]);
 				} catch (NumberFormatException e){
+					blanks = blanks + 1;
 					Raxis = 0;
 				}
 				try{
 					Lsph = Double.valueOf(row.getCell(4).toString());
 				} catch (NumberFormatException e){
+					blanks = blanks + 1;
 					Lsph = 0.0;
 				}
 				try{
 					Lcyl = Double.valueOf(row.getCell(5).toString());
 				} catch (NumberFormatException e){
+					blanks = blanks + 1;
 					Lcyl = 0.0;
 				}
 				try{
 					Laxis = Integer.valueOf(row.getCell(6).toString().split("\\.")[0]);
 				} catch (NumberFormatException e){
+					blanks = blanks + 1;
 					Laxis = 0;
 				}
+				
 				frame = row.getCell(7).toString();
+				if(frame.equals("")){
+					blanks = blanks + 1;
+				}
+				
 				lens = row.getCell(8).toString();
+				if(lens.equals("")){
+					blanks = blanks + 1;
+				}
 
 				if(!empty){
 					glasses.add(new Glasses(number, Rsph, Rcyl, Raxis, Lsph, Lcyl, Laxis, frame, lens));
+				} else{
+					empties = empties + 1;
 				}
 
 				i = i + 1;
 				row = sheet.getRow(i);
 			} while(row != null);
+			
+			System.out.println("Blank cells: " + blanks);
+			System.out.println("Empties: " + empties);
 		}
 		return glasses;
 	}
