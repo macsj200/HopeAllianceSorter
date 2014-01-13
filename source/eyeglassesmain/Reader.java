@@ -15,9 +15,8 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 public class Reader {
 	private static ArrayList<Glasses> glasses = null;
 
-	public static ArrayList<Glasses> readFile(String fileName){
+	public static ArrayList<Glasses> readFile(File file){
 		if(glasses == null){
-			File file = new File(fileName);
 			POIFSFileSystem fs = null;
 			HSSFSheet sheet = null;
 			HSSFRow row = null;

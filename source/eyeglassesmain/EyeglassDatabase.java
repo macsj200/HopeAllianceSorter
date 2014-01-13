@@ -1,12 +1,13 @@
 package eyeglassesmain;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class EyeglassDatabase {
 	private ArrayList<Glasses> glasses;
 
-	public EyeglassDatabase(String fileName){
-		glasses = Reader.readFile(fileName);
+	public EyeglassDatabase(File file){
+		glasses = Reader.readFile(file);
 	}
 	
 	public ArrayList<Glasses> getGlasses(){
