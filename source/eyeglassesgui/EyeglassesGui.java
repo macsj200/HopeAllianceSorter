@@ -17,6 +17,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -40,6 +41,8 @@ public class EyeglassesGui extends JFrame{
 	private TextOutputArea results;
 	private EyeglassDatabase database;
 	private ArrayList<Integer> resultList;
+	private JLabel numberOfResultsLabel;
+	private JPanel outputPanel;
 
 	public EyeglassesGui(){
 		File configFile = new File(".config.properties");
@@ -82,7 +85,7 @@ public class EyeglassesGui extends JFrame{
 		setLayout(new FlowLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.setPreferredSize(new Dimension(380,450));
+		this.setPreferredSize(new Dimension(420,520));
 
 		initAndAddComponents();
 		pack();
@@ -103,7 +106,7 @@ public class EyeglassesGui extends JFrame{
 
 	}
 
-	private class Searcher implements Runnable{
+	public class Searcher implements Runnable{
 		public void run(){
 			SwingUtilities.invokeLater(new Runnable(){
 				public void run(){
@@ -120,12 +123,13 @@ public class EyeglassesGui extends JFrame{
 				System.out.println("Couldn't process search parameters.");
 				JOptionPane.showMessageDialog(null, "Couldn't process search parameters.","Error", JOptionPane.ERROR_MESSAGE);
 			}
-			
+
 			if(worked){
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
 						results.clear();
 						writeArrayList(resultList);
+						numberOfResultsLabel.setText("Number of results: " + resultList.size());
 						searchButton.setEnabled(true);
 					}
 				});
@@ -145,13 +149,15 @@ public class EyeglassesGui extends JFrame{
 	private void initAndAddComponents(){
 		searchButton = new JButton("Search");
 		searchButton.setEnabled(false);
+		
+		numberOfResultsLabel = new JLabel("Number of results: N/A");
+		
+		outputPanel = new JPanel();
+		outputPanel.setLayout(new FlowLayout());
+		
+		SearcherListener listener = new SearcherListener();
 
-		searchButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				System.out.println("Start search");
-				(new Thread(new Searcher())).start();
-			}
-		});
+		searchButton.addActionListener(listener);
 
 		leftInputPanel = new JPanel();
 		leftInputPanel.setLayout(new BoxLayout(leftInputPanel, BoxLayout.Y_AXIS));
@@ -171,6 +177,13 @@ public class EyeglassesGui extends JFrame{
 		Lcyl = new LabelInputCheckbox("Lcyl: ", width);
 		Laxis = new LabelInputCheckbox("Laxis: ", width);
 
+		Rsph.addActionListener(listener);
+		Rcyl.addActionListener(listener);
+		Raxis.addActionListener(listener);
+		Lsph.addActionListener(listener);
+		Lcyl.addActionListener(listener);
+		Laxis.addActionListener(listener);
+
 		results = new TextOutputArea(20, 20);
 
 		rightInputPanel.add(Rsph);
@@ -182,9 +195,12 @@ public class EyeglassesGui extends JFrame{
 
 		inputPanel.add(leftInputPanel);
 		inputPanel.add(rightInputPanel);
+		
+		outputPanel.add(results);
+		outputPanel.add(numberOfResultsLabel);
 
 		getContentPane().add(inputPanel);
-		getContentPane().add(results);
+		getContentPane().add(outputPanel);
 		getContentPane().add(searchButton);
 	}
 
@@ -289,5 +305,12 @@ public class EyeglassesGui extends JFrame{
 		}
 
 		return results;
+	}
+
+	public class SearcherListener implements ActionListener{
+		public void actionPerformed(ActionEvent ae){
+			System.out.println("Start search");
+			(new Thread(new Searcher())).start();
+		}
 	}
 }

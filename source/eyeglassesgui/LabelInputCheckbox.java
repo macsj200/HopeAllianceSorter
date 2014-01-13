@@ -1,5 +1,6 @@
 package eyeglassesgui;
 
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -10,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class LabelInputCheckbox extends JPanel{
-	private JTextField input;
+	private VerifyTextField input;
 	private JCheckBox checkBox;
 	
 	public LabelInputCheckbox(String label, int inputWidth){
@@ -18,7 +19,7 @@ public class LabelInputCheckbox extends JPanel{
 		checkBox = new JCheckBox();
 		add(checkBox);
 		add(new JLabel(label));
-		input = new JTextField(inputWidth);
+		input = new VerifyTextField(inputWidth);
 		
 		input.addFocusListener(new FocusListener(){
 
@@ -39,6 +40,10 @@ public class LabelInputCheckbox extends JPanel{
 
 	public JTextField getInput() {
 		return input;
+	}
+	
+	public void addActionListener(ActionListener al){
+		input.addActionListener(al);
 	}
 	
 	public JCheckBox getCheckBox(){
