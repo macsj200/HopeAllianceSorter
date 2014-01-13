@@ -69,9 +69,12 @@ public class EyeglassDatabase {
 	}
 	
 	public ArrayList<Integer> searchRaxis(int raxis){
+		raxis = raxis % 180;
 		ArrayList<Integer> hits = new ArrayList<Integer>();
 		for(int i = 0; i < glasses.size(); i++){
-			//what?
+			if(isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
+				hits.add(glasses.get(i).getNumber());
+			}
 		}
 		return hits;
 	}
@@ -132,9 +135,12 @@ public class EyeglassDatabase {
 	}
 	
 	public ArrayList<Integer> searchLaxis(int laxis){
+		laxis = laxis % 180;
 		ArrayList<Integer> hits = new ArrayList<Integer>();
 		for(int i = 0; i < glasses.size(); i++){
-			//what?
+			if(isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){
+				hits.add(glasses.get(i).getNumber());
+			}
 		}
 		return hits;
 	}

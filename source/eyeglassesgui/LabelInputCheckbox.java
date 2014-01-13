@@ -24,7 +24,7 @@ public class LabelInputCheckbox extends JPanel{
 
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				checkBox.doClick();
+				//don't do nothin'
 			}
 
 			@Override
