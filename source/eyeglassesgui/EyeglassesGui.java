@@ -40,7 +40,7 @@ public class EyeglassesGui extends JFrame{
 	private EyeglassDatabase database;
 
 	public EyeglassesGui(){
-		File configFile = new File("config.properties");
+		File configFile = new File(".config.properties");
 		prop = new Properties();
 
 		fileChooser = new JFileChooser();
@@ -64,7 +64,7 @@ public class EyeglassesGui extends JFrame{
 		prop.setProperty("dir", file.getParent());
 		
 		try {
-			prop.store(new FileOutputStream("config.properties"), null);
+			prop.store(new FileOutputStream(".config.properties"), null);
 		} catch (FileNotFoundException e) {
 			
 		} catch (IOException e) {
