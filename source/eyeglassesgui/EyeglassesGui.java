@@ -19,6 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import eyeglassesmain.EyeglassDatabase;
 
@@ -38,6 +39,7 @@ public class EyeglassesGui extends JFrame{
 	private JButton searchButton;
 	private TextOutputArea results;
 	private EyeglassDatabase database;
+	private ArrayList<Integer> resultList;
 
 	public EyeglassesGui(){
 		File configFile = new File(".config.properties");
@@ -46,32 +48,30 @@ public class EyeglassesGui extends JFrame{
 		fileChooser = new JFileChooser();
 		try {
 			prop.load(new FileInputStream(configFile));
-			
+
 			fileChooser.setCurrentDirectory(new File(prop.getProperty("dir")));
 		} catch (FileNotFoundException e) {
-			
+
 		} catch (IOException e) {
-			
+
 		} finally{
 			file = promptForFile();
 		}
-		
+
 		if(file == null){
 			JOptionPane.showMessageDialog(this, "Couldn't open file.  Exiting.","Error", JOptionPane.ERROR_MESSAGE);
 			System.exit(-1);
 		}
-		
+
 		prop.setProperty("dir", file.getParent());
-		
+
 		try {
 			prop.store(new FileOutputStream(".config.properties"), null);
 		} catch (FileNotFoundException e) {
-			
-		} catch (IOException e) {
-			
-		}
 
-		database = new EyeglassDatabase(file);
+		} catch (IOException e) {
+
+		}
 
 		setLayout(new FlowLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,15 +81,46 @@ public class EyeglassesGui extends JFrame{
 		initAndAddComponents();
 		pack();
 		setVisible(true);
+
+		(new Thread(new Runnable(){
+			public void run(){
+				database = new EyeglassDatabase(file);
+
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						searchButton.setEnabled(true);
+					}
+				});
+			}
+		})).start();
+
+	}
+	
+	private class Searcher implements Runnable{
+		public void run(){
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run(){
+					searchButton.setEnabled(false);
+				}
+			});
+			resultList = searchAndCompare();
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run(){
+					results.clear();
+					writeArrayList(resultList);
+					searchButton.setEnabled(true);
+				}
+			});
+		}
 	}
 
 	private void initAndAddComponents(){
 		searchButton = new JButton("Search");
+		searchButton.setEnabled(false);
 
 		searchButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				results.clear();
-				writeArrayList(searchAndCompare());
+				(new Thread(new Searcher())).start();
 			}
 		});
 
