@@ -11,9 +11,12 @@ import javax.swing.event.DocumentListener;
 public class VerifyTextField extends JTextField {
 	private boolean legit = true;
 	private Color defaultColor;
+	private boolean intified;
 
-	public VerifyTextField(int width){
+	public VerifyTextField(int width, boolean Intified){
 		super(width);
+		
+		intified = Intified;
 		
 		defaultColor = getBackground();
 
@@ -48,15 +51,16 @@ public class VerifyTextField extends JTextField {
 
 	public boolean isLegit(){
 		try{
-			Double.valueOf(getText());
+			if(!intified){
+				Double.valueOf(getText());
+			}
+			else{
+				Integer.valueOf(getText());
+			}
 			legit = true;
 		} catch (NumberFormatException e){
 			legit = false;
 		}
 		return legit;
-	}
-
-	public VerifyTextField(){
-		this(8);
 	}
 }

@@ -5,21 +5,17 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class LabelInputCheckbox extends JPanel{
+public class LabelInput extends JPanel{
 	private VerifyTextField input;
-	private JCheckBox checkBox;
 	
-	public LabelInputCheckbox(String label, int inputWidth){
+	public LabelInput(String label, int inputWidth, boolean intify){
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		checkBox = new JCheckBox();
-		add(checkBox);
 		add(new JLabel(label));
-		input = new VerifyTextField(inputWidth);
+		input = new VerifyTextField(inputWidth, intify);
 		
 		input.addFocusListener(new FocusListener(){
 
@@ -38,15 +34,11 @@ public class LabelInputCheckbox extends JPanel{
 		add(input);
 	}
 
-	public JTextField getInput() {
+	public VerifyTextField getInput() {
 		return input;
 	}
 	
 	public void addActionListener(ActionListener al){
 		input.addActionListener(al);
-	}
-	
-	public JCheckBox getCheckBox(){
-		return checkBox;
 	}
 }

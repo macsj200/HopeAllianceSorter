@@ -31,12 +31,12 @@ public class EyeglassesGui extends JFrame{
 	private File file;
 	private Properties prop;
 	private JPanel rightInputPanel;
-	private LabelInputCheckbox Rsph;
-	private LabelInputCheckbox Rcyl;
-	private LabelInputCheckbox Raxis;
-	private LabelInputCheckbox Lsph;
-	private LabelInputCheckbox Lcyl;
-	private LabelInputCheckbox Laxis;
+	private LabelInput Rsph;
+	private LabelInput Rcyl;
+	private LabelInput Raxis;
+	private LabelInput Lsph;
+	private LabelInput Lcyl;
+	private LabelInput Laxis;
 	private JButton searchButton;
 	private TextOutputArea results;
 	private EyeglassDatabase database;
@@ -139,6 +139,7 @@ public class EyeglassesGui extends JFrame{
 					public void run(){
 						results.clear();
 						results.write("Error");
+						numberOfResultsLabel.setText("Number of results: N/A");
 						searchButton.setEnabled(true);
 					}
 				});
@@ -170,12 +171,12 @@ public class EyeglassesGui extends JFrame{
 
 		int width = 8;
 
-		Rsph = new LabelInputCheckbox("Rsph: ", width);
-		Rcyl = new LabelInputCheckbox("Rcyl: ", width);
-		Raxis = new LabelInputCheckbox("Raxis: ", width);
-		Lsph = new LabelInputCheckbox("Lsph: ", width);
-		Lcyl = new LabelInputCheckbox("Lcyl: ", width);
-		Laxis = new LabelInputCheckbox("Laxis: ", width);
+		Rsph = new LabelInput("Rsph: ", width, false);
+		Rcyl = new LabelInput("Rcyl: ", width, false);
+		Raxis = new LabelInput("Raxis: ", width, true);
+		Lsph = new LabelInput("Lsph: ", width, false);
+		Lcyl = new LabelInput("Lcyl: ", width, false);
+		Laxis = new LabelInput("Laxis: ", width, true);
 
 		Rsph.addActionListener(listener);
 		Rcyl.addActionListener(listener);
@@ -224,32 +225,32 @@ public class EyeglassesGui extends JFrame{
 		ArrayList<Integer> results = null;
 
 		try{
-			if(Rsph.getCheckBox().isSelected() && Rcyl.getCheckBox().isSelected()){
+			if(!Rsph.getInput().getText().equals("") && !Rcyl.getInput().getText().equals("")){
 				RsphAndRcylResults = database.searchRsphAndRcyl(Double.valueOf(Rsph.getInput().getText()), Double.valueOf(Rcyl.getInput().getText()));
 			}
-			else if (Rsph.getCheckBox().isSelected()){
+			else if (!Rsph.getInput().getText().equals("")){
 				RsphResults = database.searchRsph(Double.valueOf(Rsph.getInput().getText()));
 			}
-			else if (Rcyl.getCheckBox().isSelected()){
+			else if (!Rcyl.getInput().getText().equals("")){
 				RcylResults = database.searchRcyl(Double.valueOf(Rcyl.getInput().getText()));
 			}
 
-			if(Raxis.getCheckBox().isSelected()){
+			if(!Raxis.getInput().getText().equals("")){
 				RaxisResults = database.searchRaxis(Integer.valueOf(Raxis.getInput().getText()));
 			}
 
 
-			if(Lsph.getCheckBox().isSelected() && Lcyl.getCheckBox().isSelected()){
+			if(!Lsph.getInput().getText().equals("") && !Lcyl.getInput().getText().equals("")){
 				LsphAndLcylResults = database.searchLsphAndLcyl(Double.valueOf(Lsph.getInput().getText()), Double.valueOf(Lcyl.getInput().getText()));
 			}
-			else if (Lsph.getCheckBox().isSelected()){
+			else if (!Lsph.getInput().getText().equals("")){
 				LsphResults = database.searchLsph(Double.valueOf(Lsph.getInput().getText()));
 			}
-			else if (Lcyl.getCheckBox().isSelected()){
+			else if (!Lcyl.getInput().getText().equals("")){
 				LcylResults = database.searchLcyl(Double.valueOf(Lcyl.getInput().getText()));
 			}
 
-			if(Laxis.getCheckBox().isSelected()){
+			if(!Laxis.getInput().getText().equals("")){
 				LaxisResults = database.searchLaxis(Integer.valueOf(Laxis.getInput().getText()));
 			}
 		} catch (NumberFormatException e){
