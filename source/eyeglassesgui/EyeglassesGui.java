@@ -93,8 +93,10 @@ public class EyeglassesGui extends JFrame{
 
 		(new Thread(new Runnable(){
 			public void run(){
+				long time = System.currentTimeMillis();
 				database = new EyeglassDatabase(file);
-				System.out.println("read database");
+				time = System.currentTimeMillis() - time;
+				System.out.println("read database in " + time + "ms");
 
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
@@ -114,10 +116,13 @@ public class EyeglassesGui extends JFrame{
 				}
 			});
 			boolean worked = false;
-
+			
+			long time;
 			try{
+				time = System.currentTimeMillis();
 				resultList = searchAndCompare();
-				System.out.println("Search completed.  Results: " + resultList.size());
+				time = System.currentTimeMillis() - time;
+				System.out.println("Search completed in " + time + "ms." + "  Results: " + resultList.size());
 				worked = true;
 			} catch (NumberFormatException e){
 				System.out.println("Couldn't process search parameters.");
