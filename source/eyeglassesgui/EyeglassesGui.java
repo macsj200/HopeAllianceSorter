@@ -199,8 +199,9 @@ public class EyeglassesGui extends JFrame{
 		leftInputPanel.add(Lcyl);
 		leftInputPanel.add(Laxis);
 
-		inputPanel.add(leftInputPanel);
 		inputPanel.add(rightInputPanel);
+		inputPanel.add(leftInputPanel);
+		
 		
 		outputPanel.add(results);
 		outputPanel.add(numberOfResultsLabel);
