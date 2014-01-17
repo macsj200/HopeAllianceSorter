@@ -45,7 +45,13 @@ public class EyeglassDatabase {
 
 			}
 
-			raxis = raxis % 180;
+			if(raxis > 180){
+				raxis = raxis - 180;
+			} else if(raxis < 0){
+				raxis = raxis + 180;
+			} else if(raxis == 0){
+				raxis = 180;
+			}
 
 			if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
 				continue;
@@ -77,12 +83,18 @@ public class EyeglassDatabase {
 				}
 			}
 
-			laxis = laxis % 180;
+			if(raxis > 180){
+				raxis = raxis - 180;
+			} else if(raxis < 0){
+				raxis = raxis + 180;
+			} else if(raxis == 0){
+				raxis = 180;
+			}
 
 			if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){
 				continue;
 			}
-			
+
 			hits.add(glasses.get(i).getNumber());
 		}
 
