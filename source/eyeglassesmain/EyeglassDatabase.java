@@ -10,143 +10,89 @@ public class EyeglassDatabase {
 		glasses = Reader.readFile(file);
 		System.out.println("Database read into RAM");
 	}
-	
+
 	public ArrayList<Glasses> getGlasses(){
 		return glasses;
 	}
-
-	public ArrayList<Integer> searchRsph(double rsph) throws NumberFormatException{
+	public ArrayList<Integer> search(double rsph, double rcyl, int raxis, double lsph,
+			double lcyl, int laxis){
 		ArrayList<Integer> hits = new ArrayList<Integer>();
-		if(rsph < 0){
-			System.out.println("rsph is less than 0, use rsph and rcyl");
-			throw new NumberFormatException();
-		}
-		
+
 		for(int i = 0; i < glasses.size(); i++){
-			if(rsph == 0){
-				if(isBetween(glasses.get(i).getRsph(), rsph - 0.25, rsph + 0.25, true)){
-					hits.add(glasses.get(i).getNumber());
-				}
-			}
-			else if(rsph > 0){
-				if(isBetween(glasses.get(i).getRsph(), rsph - 0.50, rsph, true)){
-					hits.add(glasses.get(i).getNumber());
-				}
-			}
-		}
-		return hits;
-	}
+			if(rsph < 0){
 
-	public ArrayList<Integer> searchRsphAndRcyl(double rsph, double rcyl){
-		ArrayList<Integer> hits = new ArrayList<Integer>();
-		if(rsph < 0){
-			for(int i = 0; i < glasses.size(); i++){
 				if(isBetween(rcyl, -1.8, -0.8, true)){
-					if(isBetween(glasses.get(i).getRsph(), rsph - 0.25, rsph + 0.5, true)){
-						hits.add(glasses.get(i).getNumber());
+					if(!isBetween(glasses.get(i).getRsph(), rsph - 0.25, rsph + 0.5, true)){
+						continue;
 					}
 				}
 				else if(rcyl > -0.8){
-					if(isBetween(glasses.get(i).getRsph(), rsph, rsph + 0.5, true)){
-						hits.add(glasses.get(i).getNumber());
+					if(!isBetween(glasses.get(i).getRsph(), rsph, rsph + 0.5, true)){
+						continue;
 					}
 				}
 				else if(rcyl < -1.8){
-					if(isBetween(glasses.get(i).getRsph(), rsph - .5, rsph + .5, true)){
-						hits.add(glasses.get(i).getNumber());
+					if(!isBetween(glasses.get(i).getRsph(), rsph - .5, rsph + .5, true)){
+						continue;
 					}
 				}
 			}
-		}
-		return hits;
-	}
-	
-	public ArrayList<Integer> searchRcyl(double rcyl){
-		ArrayList<Integer> hits = new ArrayList<Integer>();
-		for(int i = 0; i < glasses.size(); i++){
-			if(isBetween(glasses.get(i).getRcyl(), rcyl, 0, true)){
-				hits.add(glasses.get(i).getNumber());
-			}
-		}
-		return hits;
-	}
-	
-	public ArrayList<Integer> searchRaxis(int raxis){
-		raxis = raxis % 180;
-		ArrayList<Integer> hits = new ArrayList<Integer>();
-		for(int i = 0; i < glasses.size(); i++){
-			if(isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
-				hits.add(glasses.get(i).getNumber());
-			}
-		}
-		return hits;
-	}
-	
-	
-	public ArrayList<Integer> searchLsph(double lsph) throws NumberFormatException{
-		if(lsph < 0){
-			System.out.println("lsph is less than 0, use lsph and lcyl");
-			throw new NumberFormatException();
-		}
-		ArrayList<Integer> hits = new ArrayList<Integer>();
-		for(int i = 0; i < glasses.size(); i++){
-			if(lsph == 0){
-				if(isBetween(glasses.get(i).getLsph(), lsph - 0.25, lsph + 0.25, true)){
-					hits.add(glasses.get(i).getNumber());
-				}
-			}
-			else if(lsph > 0){
-				if(isBetween(glasses.get(i).getLsph(), lsph - 0.50, lsph, true)){
-					hits.add(glasses.get(i).getNumber());
-				}
-			}
-		}
-		return hits;
-	}
+			else{
 
-	public ArrayList<Integer> searchLsphAndLcyl(double lsph, double lcyl){
-		ArrayList<Integer> hits = new ArrayList<Integer>();
-		if(lsph < 0){
-			for(int i = 0; i < glasses.size(); i++){
-				if(isBetween(lcyl, -1.8, -0.8, true)){
-					if(isBetween(glasses.get(i).getLsph(), lsph - 0.25, lsph + 0.5, true)){
-						hits.add(glasses.get(i).getNumber());
+				if(!isBetween(glasses.get(i).getRcyl(), rcyl, 0, true)){
+					continue;
+				}
+
+			}
+
+			raxis = raxis % 180;
+
+			if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
+				continue;
+			}
+
+
+			if(lsph < 0){
+
+				if(!isBetween(lcyl, -1.8, -0.8, true)){
+					if(!isBetween(glasses.get(i).getLsph(), lsph - 0.25, lsph + 0.5, true)){
+						continue;
 					}
 				}
 				else if(lcyl > -0.8){
-					if(isBetween(glasses.get(i).getLsph(), lsph, lsph + 0.5, true)){
-						hits.add(glasses.get(i).getNumber());
+					if(!isBetween(glasses.get(i).getLsph(), lsph, lsph + 0.5, true)){
+						continue;
 					}
 				}
 				else if(lcyl < -1.8){
-					if(isBetween(glasses.get(i).getLsph(), lsph - .5, lsph + .5, true)){
-						hits.add(glasses.get(i).getNumber());
+					if(!isBetween(glasses.get(i).getLsph(), lsph - .5, lsph + .5, true)){
+						continue;
 					}
 				}
 			}
+			else{
+
+				if(!isBetween(glasses.get(i).getLcyl(), lcyl, 0, true)){
+					continue;
+				}
+			}
+
+			laxis = laxis % 180;
+
+			if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){
+				continue;
+			}
+			
+			hits.add(glasses.get(i).getNumber());
 		}
+
 		return hits;
 	}
-	
-	public ArrayList<Integer> searchLcyl(double lcyl){
-		ArrayList<Integer> hits = new ArrayList<Integer>();
-		for(int i = 0; i < glasses.size(); i++){
-			if(isBetween(glasses.get(i).getLcyl(), lcyl, 0, true)){
-				hits.add(glasses.get(i).getNumber());
-			}
-		}
-		return hits;
-	}
-	
-	public ArrayList<Integer> searchLaxis(int laxis){
-		laxis = laxis % 180;
-		ArrayList<Integer> hits = new ArrayList<Integer>();
-		for(int i = 0; i < glasses.size(); i++){
-			if(isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){
-				hits.add(glasses.get(i).getNumber());
-			}
-		}
-		return hits;
+
+	public ArrayList<Integer> search(String rsph, String rcyl, String raxis, String lsph,
+			String lcyl, String laxis){
+		return search(Double.valueOf(rsph), Double.valueOf(rcyl), Integer.valueOf(raxis), 
+				Double.valueOf(lsph), Double.valueOf(lcyl), Integer.valueOf(laxis));
 	}
 
 	public boolean isBetween(double num, double low, double high, boolean inclusive){

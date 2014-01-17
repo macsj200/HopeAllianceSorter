@@ -116,7 +116,7 @@ public class EyeglassesGui extends JFrame{
 				}
 			});
 			boolean worked = false;
-			
+
 			long time;
 			try{
 				time = System.currentTimeMillis();
@@ -155,12 +155,12 @@ public class EyeglassesGui extends JFrame{
 	private void initAndAddComponents(){
 		searchButton = new JButton("Search");
 		searchButton.setEnabled(false);
-		
+
 		numberOfResultsLabel = new JLabel("Number of results: N/A");
-		
+
 		outputPanel = new JPanel();
 		outputPanel.setLayout(new FlowLayout());
-		
+
 		SearcherListener listener = new SearcherListener();
 
 		searchButton.addActionListener(listener);
@@ -201,8 +201,8 @@ public class EyeglassesGui extends JFrame{
 
 		inputPanel.add(rightInputPanel);
 		inputPanel.add(leftInputPanel);
-		
-		
+
+
 		outputPanel.add(results);
 		outputPanel.add(numberOfResultsLabel);
 
@@ -219,62 +219,8 @@ public class EyeglassesGui extends JFrame{
 	}
 
 	public ArrayList<Integer> searchAndCompare(){
-		ArrayList<Integer> RsphResults = null;
-		ArrayList<Integer> RcylResults = null;
-		ArrayList<Integer> RsphAndRcylResults = null;
-		ArrayList<Integer> RaxisResults = null;
-		ArrayList<Integer> LsphResults = null;
-		ArrayList<Integer> LcylResults = null;
-		ArrayList<Integer> LsphAndLcylResults = null;
-		ArrayList<Integer> LaxisResults = null;
-		ArrayList<ArrayList<Integer>> lists = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> results = null;
-
-		try{
-			if(!Rsph.getInput().getText().equals("") && !Rcyl.getInput().getText().equals("")){
-				RsphAndRcylResults = database.searchRsphAndRcyl(Double.valueOf(Rsph.getInput().getText()), Double.valueOf(Rcyl.getInput().getText()));
-			}
-			else if (!Rsph.getInput().getText().equals("")){
-				RsphResults = database.searchRsph(Double.valueOf(Rsph.getInput().getText()));
-			}
-			else if (!Rcyl.getInput().getText().equals("")){
-				RcylResults = database.searchRcyl(Double.valueOf(Rcyl.getInput().getText()));
-			}
-
-			if(!Raxis.getInput().getText().equals("")){
-				RaxisResults = database.searchRaxis(Integer.valueOf(Raxis.getInput().getText()));
-			}
-
-
-			if(!Lsph.getInput().getText().equals("") && !Lcyl.getInput().getText().equals("")){
-				LsphAndLcylResults = database.searchLsphAndLcyl(Double.valueOf(Lsph.getInput().getText()), Double.valueOf(Lcyl.getInput().getText()));
-			}
-			else if (!Lsph.getInput().getText().equals("")){
-				LsphResults = database.searchLsph(Double.valueOf(Lsph.getInput().getText()));
-			}
-			else if (!Lcyl.getInput().getText().equals("")){
-				LcylResults = database.searchLcyl(Double.valueOf(Lcyl.getInput().getText()));
-			}
-
-			if(!Laxis.getInput().getText().equals("")){
-				LaxisResults = database.searchLaxis(Integer.valueOf(Laxis.getInput().getText()));
-			}
-		} catch (NumberFormatException e){
-			throw e;
-		}
-
-		lists.add(RsphResults);
-		lists.add(RcylResults);
-		lists.add(RsphAndRcylResults);
-		lists.add(RaxisResults);
-		lists.add(LsphResults);
-		lists.add(LcylResults);
-		lists.add(LsphAndLcylResults);
-		lists.add(LaxisResults);
-
-		results = compareArrayLists(lists);
-
-		return results;
+		return database.search(Rsph.getInput().getText(), Rcyl.getInput().getText(), Raxis.getInput().getText(), 
+				Lsph.getInput().getText(), Lcyl.getInput().getText(), Laxis.getInput().getText());
 	}
 
 	public void writeArrayList(ArrayList<Integer> list){
@@ -283,36 +229,6 @@ public class EyeglassesGui extends JFrame{
 		}
 	}
 
-	public ArrayList<Integer> compareArrayLists(ArrayList<ArrayList<Integer>> list){
-		ArrayList<Integer> results = new ArrayList<Integer>();
-		list.removeAll(Collections.singleton(null));
-
-		if(list.size() == 1){
-			return list.get(0);
-		}
-
-		int indexOfLargest = 0;
-
-		for(int i = 0; i < list.size(); i++){
-			if(list.get(i).size() > list.get(indexOfLargest).size()){
-				indexOfLargest = i;
-			}
-		}
-
-		for(int i = 0; i < list.size(); i++){
-			if(i == indexOfLargest){
-				continue;
-			}
-
-			for(int j = 0; j < list.get(indexOfLargest).size(); j++){
-				if(list.get(i).contains(list.get(indexOfLargest).get(j))){
-					results.add(list.get(indexOfLargest).get(j));
-				}
-			}
-		}
-
-		return results;
-	}
 
 	public class SearcherListener implements ActionListener{
 		public void actionPerformed(ActionEvent ae){
