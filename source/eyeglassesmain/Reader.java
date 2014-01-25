@@ -35,9 +35,7 @@ public class Reader {
 				System.out.println("Couldn't read file");
 			}
 
-			int rows; // No of rows
 			sheet =  wb.getSheetAt(0);
-			rows = sheet.getPhysicalNumberOfRows();
 
 			glasses = new ArrayList<Glasses>();
 

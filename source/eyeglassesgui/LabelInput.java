@@ -7,8 +7,8 @@ import java.awt.event.FocusListener;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class LabelInput extends JPanel{
 	private VerifyTextField input;
 	

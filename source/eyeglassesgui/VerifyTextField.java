@@ -1,13 +1,12 @@
 package eyeglassesgui;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+@SuppressWarnings("serial")
 public class VerifyTextField extends JTextField {
 	private boolean legit = true;
 	private Color defaultColor;

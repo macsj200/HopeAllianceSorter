@@ -5,6 +5,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+@SuppressWarnings("serial")
 public class TextOutputArea extends Box implements GuiWritable {
 	private JTextArea outputArea = null;
 	private JScrollPane scrollPane = null;

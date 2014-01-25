@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Properties;
 
 import javax.swing.BoxLayout;
@@ -24,6 +23,7 @@ import javax.swing.SwingUtilities;
 
 import eyeglassesmain.EyeglassDatabase;
 
+@SuppressWarnings("serial")
 public class EyeglassesGui extends JFrame{
 	private JPanel inputPanel;
 	private JPanel leftInputPanel;
@@ -94,6 +94,7 @@ public class EyeglassesGui extends JFrame{
 		setVisible(true);
 
 		(new Thread(new Runnable(){
+			@Override
 			public void run(){
 				long time = System.currentTimeMillis();
 				database = new EyeglassDatabase(file);
@@ -101,6 +102,7 @@ public class EyeglassesGui extends JFrame{
 				System.out.println("read database in " + time + "ms");
 
 				SwingUtilities.invokeLater(new Runnable(){
+					@Override
 					public void run(){
 						searchButton.setEnabled(true);
 					}
@@ -111,8 +113,10 @@ public class EyeglassesGui extends JFrame{
 	}
 
 	public class Searcher implements Runnable{
+		@Override
 		public void run(){
 			SwingUtilities.invokeLater(new Runnable(){
+				@Override
 				public void run(){
 					searchButton.setEnabled(false);
 				}
@@ -133,6 +137,7 @@ public class EyeglassesGui extends JFrame{
 
 			if(worked){
 				SwingUtilities.invokeLater(new Runnable(){
+					@Override
 					public void run(){
 						results.clear();
 						writeArrayList(resultList);
@@ -143,6 +148,7 @@ public class EyeglassesGui extends JFrame{
 			} 
 			else{
 				SwingUtilities.invokeLater(new Runnable(){
+					@Override
 					public void run(){
 						results.clear();
 						results.write("Error");
@@ -233,6 +239,7 @@ public class EyeglassesGui extends JFrame{
 
 
 	public class SearcherListener implements ActionListener{
+		@Override
 		public void actionPerformed(ActionEvent ae){
 			System.out.println("Start search");
 			(new Thread(new Searcher())).start();
