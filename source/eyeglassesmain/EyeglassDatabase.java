@@ -14,6 +14,7 @@ public class EyeglassDatabase {
 	public ArrayList<Glasses> getGlasses(){
 		return glasses;
 	}
+	
 	public ArrayList<Integer> search(double rsph, double rcyl, int raxis, double lsph,
 			double lcyl, int laxis){
 		ArrayList<Integer> hits = new ArrayList<Integer>();
