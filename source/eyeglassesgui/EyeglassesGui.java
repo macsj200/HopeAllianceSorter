@@ -60,13 +60,15 @@ public class EyeglassesGui extends JFrame{
 			System.out.println("Couldn't load config file.  Loading default");
 		} finally{
 			file = promptForFile();
-			System.out.println("Sucessfully opened file");
-		}
 
-		if(file == null){
-			System.out.println("File selection failed");
-			JOptionPane.showMessageDialog(this, "Couldn't open file.  Exiting.","Error", JOptionPane.ERROR_MESSAGE);
-			System.exit(-1);
+			if(file == null){
+				System.out.println("File selection failed");
+				JOptionPane.showMessageDialog(this, "Couldn't open file.  Exiting.","Error", JOptionPane.ERROR_MESSAGE);
+				System.exit(-1);
+			}
+			else{
+				System.out.println("Sucessfully opened file");
+			}
 		}
 
 		System.out.println("Writing last directory to config: " + file.getParent());

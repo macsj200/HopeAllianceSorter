@@ -19,6 +19,22 @@ public class EyeglassDatabase {
 		ArrayList<Integer> hits = new ArrayList<Integer>();
 
 		for(int i = 0; i < glasses.size(); i++){
+			if(!isBetween(glasses.get(i).getRcyl(), rcyl, 0, true)){
+				continue;
+			}
+
+			if(rsph == 0){
+				if(!isBetween(glasses.get(i).getRsph(), rsph - 0.25, rsph + 0.25, true)){
+					continue;
+				}
+			}
+
+			if(rsph > 0){
+				if(!isBetween(glasses.get(i).getRsph(), rsph - 0.5, rsph, true)){
+					continue;
+				}
+			}
+
 			if(rsph < 0){
 
 				if(isBetween(rcyl, -1.8, -0.8, true)){
@@ -37,13 +53,7 @@ public class EyeglassDatabase {
 					}
 				}
 			}
-			else{
 
-				if(!isBetween(glasses.get(i).getRcyl(), rcyl, 0, true)){
-					continue;
-				}
-
-			}
 
 			if(raxis > 180){
 				raxis = raxis - 180;
@@ -56,11 +66,27 @@ public class EyeglassDatabase {
 			if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
 				continue;
 			}
+			
+			if(!isBetween(glasses.get(i).getLcyl(), lcyl, 0, true)){
+				continue;
+			}
+
+			if(lsph == 0){
+				if(!isBetween(glasses.get(i).getLsph(), lsph - 0.25, lsph + 0.25, true)){
+					continue;
+				}
+			}
+
+			if(lsph > 0){
+				if(!isBetween(glasses.get(i).getLsph(), lsph - 0.5, lsph, true)){
+					continue;
+				}
+			}
 
 
 			if(lsph < 0){
 
-				if(!isBetween(lcyl, -1.8, -0.8, true)){
+				if(isBetween(lcyl, -1.8, -0.8, true)){
 					if(!isBetween(glasses.get(i).getLsph(), lsph - 0.25, lsph + 0.5, true)){
 						continue;
 					}
@@ -76,19 +102,13 @@ public class EyeglassDatabase {
 					}
 				}
 			}
-			else{
 
-				if(!isBetween(glasses.get(i).getLcyl(), lcyl, 0, true)){
-					continue;
-				}
-			}
-
-			if(raxis > 180){
-				raxis = raxis - 180;
-			} else if(raxis < 0){
-				raxis = raxis + 180;
-			} else if(raxis == 0){
-				raxis = 180;
+			if(laxis > 180){
+				laxis = laxis - 180;
+			} else if(laxis < 0){
+				laxis = laxis + 180;
+			} else if(laxis == 0){
+				laxis = 180;
 			}
 
 			if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){
