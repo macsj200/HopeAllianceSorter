@@ -44,7 +44,7 @@ public class Glasses {
 	
 	@Override
 	public String toString(){
-		return String.format("%d,%f,%f,%d,%f,%f,%d,%s,%s",number, Rsph, Rcyl, Raxis, Rsph, Rcyl, Raxis, frame, lens);
+		return String.format("%d\t%s\t%s\t%d\t%s\t%s\t%d\t%s\t%s",number, Rsph, Rcyl, Raxis, Rsph, Rcyl, Raxis, frame, lens);
 	}
 	
 	public int getNumber(){

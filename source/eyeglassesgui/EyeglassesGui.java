@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import eyeglassesmain.EyeglassDatabase;
+import eyeglassesmain.EyeglassesMain;
 import eyeglassesmain.Glasses;
 
 @SuppressWarnings("serial")
@@ -46,6 +47,7 @@ public class EyeglassesGui extends JFrame{
 	private JPanel outputPanel;
 
 	public EyeglassesGui(){
+		super("HopeSearch v" + EyeglassesMain.VERSION);
 		File configFile = new File(".config.properties");
 		prop = new Properties();
 
@@ -88,7 +90,7 @@ public class EyeglassesGui extends JFrame{
 		setLayout(new FlowLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.setPreferredSize(new Dimension(420,520));
+		this.setPreferredSize(new Dimension(1050,720));
 
 		initAndAddComponents();
 		pack();
@@ -141,6 +143,7 @@ public class EyeglassesGui extends JFrame{
 					@Override
 					public void run(){
 						results.clear();
+						results.write("No.\tRSPH\tRCYL\tRAXIS\tLSPH\tLCYL\tLAXIS\tFRAME\tLENS\n\n");
 						writeGlassesList(resultList);
 						numberOfResultsLabel.setText("Number of results: " + resultList.size());
 						searchButton.setEnabled(true);
@@ -199,7 +202,7 @@ public class EyeglassesGui extends JFrame{
 		Lcyl.addActionListener(listener);
 		Laxis.addActionListener(listener);
 
-		results = new TextOutputArea(20, 20);
+		results = new TextOutputArea(20, 70);
 
 		rightInputPanel.add(Rsph);
 		rightInputPanel.add(Rcyl);
@@ -210,7 +213,6 @@ public class EyeglassesGui extends JFrame{
 
 		inputPanel.add(rightInputPanel);
 		inputPanel.add(leftInputPanel);
-
 
 		outputPanel.add(results);
 		outputPanel.add(numberOfResultsLabel);

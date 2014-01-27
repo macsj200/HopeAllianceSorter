@@ -109,11 +109,13 @@ public class Reader {
 				
 				frame = row.getCell(7).toString();
 				if(frame.equals("")){
+					frame = "N/A";
 					blanks = blanks + 1;
 				}
 				
 				lens = row.getCell(8).toString();
 				if(lens.equals("")){
+					lens = "N/A";
 					blanks = blanks + 1;
 				}
 
