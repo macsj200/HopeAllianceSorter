@@ -3,6 +3,9 @@ HopeAllianceSorter
 
 A program to search an excel database of eyeglass prescriptions.
 
+This program requires the Apache POI lib which can be found at http://poi.apache.org/download.html
+This program also requries Java http://java.com/en/download/index.jsp
+
 To use this program, create a .xls (not .xlsx) file with a spreadsheet editor.
 The first row of the spreadsheet is skipped, so put data in subsequent rows.
 
