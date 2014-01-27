@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import eyeglassesmain.EyeglassDatabase;
+import eyeglassesmain.Glasses;
 
 @SuppressWarnings("serial")
 public class EyeglassesGui extends JFrame{
@@ -40,7 +41,7 @@ public class EyeglassesGui extends JFrame{
 	private JButton searchButton;
 	private TextOutputArea results;
 	private EyeglassDatabase database;
-	private ArrayList<Integer> resultList;
+	private ArrayList<Glasses> resultList;
 	private JLabel numberOfResultsLabel;
 	private JPanel outputPanel;
 
@@ -140,7 +141,7 @@ public class EyeglassesGui extends JFrame{
 					@Override
 					public void run(){
 						results.clear();
-						writeArrayList(resultList);
+						writeGlassesList(resultList);
 						numberOfResultsLabel.setText("Number of results: " + resultList.size());
 						searchButton.setEnabled(true);
 					}
@@ -226,14 +227,14 @@ public class EyeglassesGui extends JFrame{
 		return null;
 	}
 
-	public ArrayList<Integer> searchAndCompare(){
+	public ArrayList<Glasses> searchAndCompare(){
 		return database.search(Rsph.getInput().getText(), Rcyl.getInput().getText(), Raxis.getInput().getText(), 
 				Lsph.getInput().getText(), Lcyl.getInput().getText(), Laxis.getInput().getText());
 	}
 
-	public void writeArrayList(ArrayList<Integer> list){
+	public void writeGlassesList(ArrayList<Glasses> list){
 		for(int i = 0; i < list.size(); i++){
-			results.write(list.get(i) + "\n");
+			results.write(list.get(i).toString() + "\n");
 		}
 	}
 

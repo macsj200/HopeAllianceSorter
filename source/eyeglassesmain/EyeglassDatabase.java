@@ -15,9 +15,9 @@ public class EyeglassDatabase {
 		return glasses;
 	}
 	
-	public ArrayList<Integer> search(double rsph, double rcyl, int raxis, double lsph,
+	public ArrayList<Glasses> search(double rsph, double rcyl, int raxis, double lsph,
 			double lcyl, int laxis){
-		ArrayList<Integer> hits = new ArrayList<Integer>();
+		ArrayList<Glasses> hits = new ArrayList<Glasses>();
 
 		for(int i = 0; i < glasses.size(); i++){
 			if(!isBetween(glasses.get(i).getRcyl(), rcyl, 0, true)){
@@ -116,13 +116,13 @@ public class EyeglassDatabase {
 				continue;
 			}
 
-			hits.add(glasses.get(i).getNumber());
+			hits.add(glasses.get(i));
 		}
 
 		return hits;
 	}
 
-	public ArrayList<Integer> search(String rsph, String rcyl, String raxis, String lsph,
+	public ArrayList<Glasses> search(String rsph, String rcyl, String raxis, String lsph,
 			String lcyl, String laxis){
 		return search(Double.valueOf(rsph), Double.valueOf(rcyl), Integer.valueOf(raxis), 
 				Double.valueOf(lsph), Double.valueOf(lcyl), Integer.valueOf(laxis));
