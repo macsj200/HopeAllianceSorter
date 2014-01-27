@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,7 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -31,6 +34,8 @@ public class EyeglassesGui extends JFrame{
 	private JPanel leftInputPanel;
 	private JFileChooser fileChooser;
 	private File file;
+	private BufferedImage logoImage;
+	private JPanel logoPanel;
 	private Properties prop;
 	private JPanel rightInputPanel;
 	private LabelInput Rsph;
@@ -165,6 +170,20 @@ public class EyeglassesGui extends JFrame{
 	}
 
 	private void initAndAddComponents(){
+		logoImage = null;
+		
+		try {
+			logoImage = ImageIO.read(getClass().getResource("/imgs/colored_logo.jpg"));
+		} catch (IOException e) {
+			System.out.println("Couldn't find logo file");
+		}
+
+		logoPanel = new JPanel();
+
+		if(logoImage != null){
+			logoPanel.add(new JLabel(new ImageIcon(logoImage)));
+		}
+
 		searchButton = new JButton("Search");
 		searchButton.setEnabled(false);
 
@@ -217,6 +236,7 @@ public class EyeglassesGui extends JFrame{
 		outputPanel.add(results);
 		outputPanel.add(numberOfResultsLabel);
 
+		getContentPane().add(logoPanel);
 		getContentPane().add(inputPanel);
 		getContentPane().add(outputPanel);
 		getContentPane().add(searchButton);
