@@ -34,6 +34,9 @@ public class EyeglassesGui extends JFrame{
 	private JPanel leftInputPanel;
 	private JFileChooser fileChooser;
 	private File file;
+	private JButton loadNewFileButton;
+	private JPanel filePanel;
+	private JLabel fileLabel;
 	private BufferedImage logoImage;
 	private JPanel logoPanel;
 	private Properties prop;
@@ -57,67 +60,28 @@ public class EyeglassesGui extends JFrame{
 		prop = new Properties();
 
 		fileChooser = new JFileChooser();
+		
 		try {
 			prop.load(new FileInputStream(configFile));
 			System.out.println("Config file exists, reading");
-			System.out.println("Starting in " + prop.getProperty("dir"));
-			fileChooser.setCurrentDirectory(new File(prop.getProperty("dir")));
+
+			file = new File(prop.getProperty("filepath"));
 		} catch (FileNotFoundException e) {
-			System.out.println("Couldn't find config file.  Loading default");
+			System.out.println("Couldn't find config");
 		} catch (IOException e) {
-			System.out.println("Couldn't load config file.  Loading default");
+			System.out.println("Couldn't read config");
 		} finally{
-			file = promptForFile();
-
-			if(file == null){
-				System.out.println("File selection failed");
-				JOptionPane.showMessageDialog(this, "Couldn't open file.  Exiting.","Error", JOptionPane.ERROR_MESSAGE);
-				System.exit(-1);
-			}
-			else{
-				System.out.println("Sucessfully opened file");
-			}
+			loadNewFile(file);
 		}
 
-		System.out.println("Writing last directory to config: " + file.getParent());
-		prop.setProperty("dir", file.getParent());
-
-
-		try {
-			prop.store(new FileOutputStream(".config.properties"), null);
-			System.out.println("Stored config");
-		} catch (FileNotFoundException e) {
-			System.out.println("Couldn't save config");
-		} catch (IOException e) {
-			System.out.println("Couldn't save config");
-		}
-
-		setLayout(new FlowLayout());
+		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.setPreferredSize(new Dimension(1050,720));
+		this.setPreferredSize(new Dimension(1050,600));
 
 		initAndAddComponents();
 		pack();
 		setVisible(true);
-
-		(new Thread(new Runnable(){
-			@Override
-			public void run(){
-				long time = System.currentTimeMillis();
-				database = new EyeglassDatabase(file);
-				time = System.currentTimeMillis() - time;
-				System.out.println("read database in " + time + "ms");
-
-				SwingUtilities.invokeLater(new Runnable(){
-					@Override
-					public void run(){
-						searchButton.setEnabled(true);
-					}
-				});
-			}
-		})).start();
-
 	}
 
 	public class Searcher implements Runnable{
@@ -171,7 +135,7 @@ public class EyeglassesGui extends JFrame{
 
 	private void initAndAddComponents(){
 		logoImage = null;
-		
+
 		try {
 			logoImage = ImageIO.read(getClass().getResource("/imgs/colored_logo.jpg"));
 		} catch (IOException e) {
@@ -223,6 +187,25 @@ public class EyeglassesGui extends JFrame{
 
 		results = new TextOutputArea(20, 70);
 
+		fileLabel = new JLabel("No file loaded yet");
+		loadNewFileButton = new JButton("Load new file");
+		
+		loadNewFileButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				loadNewFile(null);
+			}
+			
+		});
+
+		filePanel = new JPanel();
+
+		filePanel.setLayout(new FlowLayout());
+
+		filePanel.add(fileLabel);
+		filePanel.add(loadNewFileButton);
+
 		rightInputPanel.add(Rsph);
 		rightInputPanel.add(Rcyl);
 		rightInputPanel.add(Raxis);
@@ -240,13 +223,7 @@ public class EyeglassesGui extends JFrame{
 		getContentPane().add(inputPanel);
 		getContentPane().add(outputPanel);
 		getContentPane().add(searchButton);
-	}
-
-	public File promptForFile(){
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
-			return fileChooser.getSelectedFile();
-		}
-		return null;
+		getContentPane().add(filePanel);
 	}
 
 	public ArrayList<Glasses> searchAndCompare(){
@@ -258,6 +235,66 @@ public class EyeglassesGui extends JFrame{
 		for(int i = 0; i < list.size(); i++){
 			results.write(list.get(i).toString() + "\n");
 		}
+	}
+
+	private void loadNewFile(File pFile){
+		final File legitFile;
+		
+		if(pFile == null){
+			System.out.println("prompting for file");
+			int retVal;
+
+			do{
+				retVal = fileChooser.showOpenDialog(this);
+
+				pFile = fileChooser.getSelectedFile();
+
+				if(retVal == JFileChooser.CANCEL_OPTION){
+					System.out.println("Exit selected.  Bail.");
+					System.exit(0);
+				}
+				else if(retVal != JFileChooser.APPROVE_OPTION){
+					System.out.println("File selection failed");
+					JOptionPane.showMessageDialog(this, "Couldn't open file.","Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					System.out.println("Sucessfully opened file");
+				}
+			} while (retVal != JFileChooser.APPROVE_OPTION);
+
+			System.out.println("Writing path to config: " + pFile.getAbsolutePath());
+			prop.setProperty("filepath", pFile.getAbsolutePath());
+
+
+			try {
+				prop.store(new FileOutputStream(".config.properties"), null);
+				System.out.println("Stored config");
+			} catch (FileNotFoundException e) {
+				System.out.println("Couldn't save config");
+			} catch (IOException e) {
+				System.out.println("Couldn't save config");
+			}
+		}
+		
+		legitFile = pFile;
+
+		(new Thread(new Runnable(){
+			@Override
+			public void run(){
+				long time = System.currentTimeMillis();
+				database = new EyeglassDatabase(legitFile);
+				time = System.currentTimeMillis() - time;
+				System.out.println("read database in " + time + "ms");
+
+				SwingUtilities.invokeLater(new Runnable(){
+					@Override
+					public void run(){
+						searchButton.setEnabled(true);
+						fileLabel.setText(legitFile.getName());
+					}
+				});
+			}
+		})).start();
 	}
 
 
