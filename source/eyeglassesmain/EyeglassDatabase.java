@@ -20,7 +20,7 @@ public class EyeglassDatabase {
 		ArrayList<Glasses> hits = new ArrayList<Glasses>();
 
 		for(int i = 0; i < glasses.size(); i++){
-			if(!isBetween(glasses.get(i).getRcyl(), rcyl, 0, true)){
+			if(!isBetween(glasses.get(i).getRcyl(), rcyl, rcyl + 0.75, true)){
 				continue;
 			}
 
@@ -63,12 +63,16 @@ public class EyeglassDatabase {
 			} else if(raxis == 0){
 				raxis = 180;
 			}
+			
+			if(rcyl == 0 || rcyl + 0.75 == 0){
+				raxis = 0;
+			}
 
 			if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
 				continue;
 			}
 			
-			if(!isBetween(glasses.get(i).getLcyl(), lcyl, 0, true)){
+			if(!isBetween(glasses.get(i).getLcyl(), lcyl, lcyl + 0.75, true)){
 				continue;
 			}
 
@@ -110,6 +114,10 @@ public class EyeglassDatabase {
 				laxis = laxis + 180;
 			} else if(laxis == 0){
 				laxis = 180;
+			}
+			
+			if(lcyl == 0 || lcyl + 0.75 == 0){
+				laxis = 0;
 			}
 
 			if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){

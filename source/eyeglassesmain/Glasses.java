@@ -23,12 +23,20 @@ public class Glasses {
 			raxis = 180;
 		}
 		
+		if(rcyl == 0 || rcyl + 0.75 == 0){
+			raxis = 0;
+		}
+		
 		if(laxis > 180){
 			laxis = laxis - 180;
 		} else if(laxis < 0){
 			laxis = laxis + 180;
 		} else if(laxis == 0){
 			laxis = 180;
+		}
+		
+		if(lcyl == 0 || lcyl + 0.75 == 0){
+			laxis = 0;
 		}
 		
 		number = Number;
