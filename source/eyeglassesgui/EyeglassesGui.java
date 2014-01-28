@@ -187,6 +187,9 @@ public class EyeglassesGui extends JFrame{
 		Lsph = new LabelInput("Lsph: ", width, false);
 		Lcyl = new LabelInput("Lcyl: ", width, false);
 		Laxis = new LabelInput("Laxis: ", width, true);
+		
+		Raxis.getInput().getDocument().putProperty("owner", Raxis);
+		Laxis.getInput().getDocument().putProperty("owner", Laxis);
 
 		Rsph.addActionListener(listener);
 		Rcyl.addActionListener(listener);
@@ -378,27 +381,32 @@ public class EyeglassesGui extends JFrame{
 
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
-				changed();
+				changed(arg0);
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
-				changed();
+				changed(arg0);
 			}
 
-			public void changed(){
+			public void changed(DocumentEvent arg0){
 				if(textField.getText().equals("")){
 					color(true);
 				} else{
-					color(verify());
+					color(verify(arg0));
 				}
 			}
 
-			public boolean verify(){
+			public boolean verify(DocumentEvent arg0){
 				boolean ret = false;
 
 				try{
-					Double.valueOf(textField.getText());
+					if(arg0.getDocument().getProperty("owner") == Raxis || arg0.getDocument().getProperty("owner") == Laxis){
+						Integer.valueOf(textField.getText());
+					}
+					else{
+						Double.valueOf(textField.getText());
+					}
 					ret = true;
 				} catch (NumberFormatException e){
 					ret = false;
