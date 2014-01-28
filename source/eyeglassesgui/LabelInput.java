@@ -7,15 +7,18 @@ import java.awt.event.FocusListener;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class LabelInput extends JPanel{
-	private VerifyTextField input;
+	private JTextField input;
+	private String label;
 	
 	public LabelInput(String label, int inputWidth, boolean intify){
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		this.label = label;
 		add(new JLabel(label));
-		input = new VerifyTextField(inputWidth, intify);
+		input = new JTextField(inputWidth);
 		
 		input.addFocusListener(new FocusListener(){
 
@@ -34,8 +37,12 @@ public class LabelInput extends JPanel{
 		add(input);
 	}
 
-	public VerifyTextField getInput() {
+	public JTextField getInput() {
 		return input;
+	}
+	
+	public String getLabel(){
+		return label;
 	}
 	
 	public void addActionListener(ActionListener al){

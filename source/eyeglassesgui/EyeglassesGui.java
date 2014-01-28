@@ -1,5 +1,6 @@
 package eyeglassesgui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -22,7 +23,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import eyeglassesmain.EyeglassDatabase;
 import eyeglassesmain.EyeglassesMain;
@@ -60,7 +64,7 @@ public class EyeglassesGui extends JFrame{
 		prop = new Properties();
 
 		fileChooser = new JFileChooser();
-		
+
 		try {
 			prop.load(new FileInputStream(configFile));
 			System.out.println("Config file exists, reading");
@@ -184,19 +188,26 @@ public class EyeglassesGui extends JFrame{
 		Lsph.addActionListener(listener);
 		Lcyl.addActionListener(listener);
 		Laxis.addActionListener(listener);
+		
+		addDocumentListenerTo(Rsph.getInput());
+		addDocumentListenerTo(Rcyl.getInput());
+		addDocumentListenerTo(Raxis.getInput());
+		addDocumentListenerTo(Lsph.getInput());
+		addDocumentListenerTo(Lcyl.getInput());
+		addDocumentListenerTo(Laxis.getInput());
 
 		results = new TextOutputArea(20, 70);
 
 		fileLabel = new JLabel("No file loaded yet");
 		loadNewFileButton = new JButton("Load new file");
-		
+
 		loadNewFileButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadNewFile(null);
 			}
-			
+
 		});
 
 		filePanel = new JPanel();
@@ -239,7 +250,7 @@ public class EyeglassesGui extends JFrame{
 
 	private void loadNewFile(File pFile){
 		final File legitFile;
-		
+
 		if(pFile == null){
 			System.out.println("prompting for file");
 			int retVal;
@@ -275,7 +286,7 @@ public class EyeglassesGui extends JFrame{
 				System.out.println("Couldn't save config");
 			}
 		}
-		
+
 		legitFile = pFile;
 
 		(new Thread(new Runnable(){
@@ -304,5 +315,56 @@ public class EyeglassesGui extends JFrame{
 			System.out.println("Start search");
 			(new Thread(new Searcher())).start();
 		}
+	}
+
+	private void addDocumentListenerTo(final JTextField textField){
+		textField.getDocument().addDocumentListener(new DocumentListener(){
+			
+			Color defaultColor = textField.getBackground();
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				changed();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				changed();
+			}
+			
+			public void changed(){
+				if(textField.getText().equals("")){
+					color(true);
+				} else{
+					color(verify());
+				}
+			}
+			
+			public boolean verify(){
+				boolean ret = false;
+				
+				try{
+					Double.valueOf(textField.getText());
+					ret = true;
+				} catch (NumberFormatException e){
+					ret = false;
+				}
+				
+				return ret;
+			}
+			
+			public void color(boolean good){
+				if(good){
+					textField.setBackground(defaultColor);
+				} else{
+					textField.setBackground(Color.red);
+				}
+			}
+		});
 	}
 }
