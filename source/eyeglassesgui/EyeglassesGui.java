@@ -65,11 +65,24 @@ public class EyeglassesGui extends JFrame{
 
 		fileChooser = new JFileChooser();
 
+		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		this.setPreferredSize(new Dimension(1050,600));
+
+		initAndAddComponents();
+		pack();
+
 		try {
 			prop.load(new FileInputStream(configFile));
 			System.out.println("Config file exists, reading");
 
 			file = new File(prop.getProperty("filepath"));
+
+			if(file.getParentFile().exists()){
+				fileChooser.setCurrentDirectory(file.getParentFile());
+			}
+
 		} catch (FileNotFoundException e) {
 			System.out.println("Couldn't find config");
 		} catch (IOException e) {
@@ -78,13 +91,6 @@ public class EyeglassesGui extends JFrame{
 			loadNewFile(file);
 		}
 
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		this.setPreferredSize(new Dimension(1050,600));
-
-		initAndAddComponents();
-		pack();
 		setVisible(true);
 	}
 
@@ -188,7 +194,7 @@ public class EyeglassesGui extends JFrame{
 		Lsph.addActionListener(listener);
 		Lcyl.addActionListener(listener);
 		Laxis.addActionListener(listener);
-		
+
 		addDocumentListenerTo(Rsph.getInput());
 		addDocumentListenerTo(Rcyl.getInput());
 		addDocumentListenerTo(Raxis.getInput());
@@ -250,6 +256,7 @@ public class EyeglassesGui extends JFrame{
 
 	private void loadNewFile(File pFile){
 		final File legitFile;
+		boolean openFile = true;
 
 		if(pFile == null){
 			System.out.println("prompting for file");
@@ -261,8 +268,9 @@ public class EyeglassesGui extends JFrame{
 				pFile = fileChooser.getSelectedFile();
 
 				if(retVal == JFileChooser.CANCEL_OPTION){
-					System.out.println("Exit selected.  Bail.");
-					System.exit(0);
+					System.out.println("Cancel selected.");
+					openFile = false;
+					break;
 				}
 				else if(retVal != JFileChooser.APPROVE_OPTION){
 					System.out.println("File selection failed");
@@ -270,42 +278,83 @@ public class EyeglassesGui extends JFrame{
 				}
 				else{
 					System.out.println("Sucessfully opened file");
+					openFile = true;
 				}
+
 			} while (retVal != JFileChooser.APPROVE_OPTION);
-
-			System.out.println("Writing path to config: " + pFile.getAbsolutePath());
-			prop.setProperty("filepath", pFile.getAbsolutePath());
-
-
-			try {
-				prop.store(new FileOutputStream(".config.properties"), null);
-				System.out.println("Stored config");
-			} catch (FileNotFoundException e) {
-				System.out.println("Couldn't save config");
-			} catch (IOException e) {
-				System.out.println("Couldn't save config");
-			}
 		}
 
-		legitFile = pFile;
 
-		(new Thread(new Runnable(){
-			@Override
-			public void run(){
-				long time = System.currentTimeMillis();
-				database = new EyeglassDatabase(legitFile);
-				time = System.currentTimeMillis() - time;
-				System.out.println("read database in " + time + "ms");
+		if(openFile){
+			legitFile = pFile;
 
-				SwingUtilities.invokeLater(new Runnable(){
-					@Override
-					public void run(){
-						searchButton.setEnabled(true);
-						fileLabel.setText(legitFile.getName());
+			(new Thread(new Runnable(){
+				@Override
+				public void run(){
+					SwingUtilities.invokeLater(new Runnable(){
+						@Override
+						public void run(){
+							loadNewFileButton.setEnabled(false);
+						}
+					});
+					
+					try{
+						long time = System.currentTimeMillis();
+						
+						database = new EyeglassDatabase(legitFile);
+						
+						time = System.currentTimeMillis() - time;
+						System.out.println("read database in " + time + "ms");
+					} catch (org.apache.poi.poifs.filesystem.OfficeXmlFileException e){
+						System.out.println("File is not XLS or something");
+						
+						SwingUtilities.invokeLater(new Runnable(){
+							@Override
+							public void run(){
+								searchButton.setEnabled(false);
+								loadNewFileButton.setEnabled(true);
+								fileLabel.setText("No file loaded yet");
+							}
+						});
+						
+						JOptionPane.showMessageDialog(null, "Couldn't parse file.  Is it a .xls file?","Error", JOptionPane.ERROR_MESSAGE);
+						
+						return;
 					}
-				});
-			}
-		})).start();
+					
+					System.out.println("Writing path to config: " + legitFile.getAbsolutePath());
+                    prop.setProperty("filepath", legitFile.getAbsolutePath());
+
+
+                    try {
+                            prop.store(new FileOutputStream(".config.properties"), null);
+                            System.out.println("Stored config");
+                    } catch (FileNotFoundException e) {
+                            System.out.println("Couldn't save config");
+                    } catch (IOException e) {
+                            System.out.println("Couldn't save config");
+                    }
+
+					SwingUtilities.invokeLater(new Runnable(){
+						@Override
+						public void run(){
+							searchButton.setEnabled(true);
+							loadNewFileButton.setEnabled(true);
+							fileLabel.setText("Loaded " + legitFile.getName());
+						}
+					});
+				}
+			})).start();
+
+		} else{
+			SwingUtilities.invokeLater(new Runnable(){
+				@Override
+				public void run(){
+					searchButton.setEnabled(false);
+					fileLabel.setText("No file loaded yet");
+				}
+			});
+		}
 	}
 
 
@@ -319,12 +368,12 @@ public class EyeglassesGui extends JFrame{
 
 	private void addDocumentListenerTo(final JTextField textField){
 		textField.getDocument().addDocumentListener(new DocumentListener(){
-			
+
 			Color defaultColor = textField.getBackground();
 
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
-				
+
 			}
 
 			@Override
@@ -336,7 +385,7 @@ public class EyeglassesGui extends JFrame{
 			public void removeUpdate(DocumentEvent arg0) {
 				changed();
 			}
-			
+
 			public void changed(){
 				if(textField.getText().equals("")){
 					color(true);
@@ -344,20 +393,20 @@ public class EyeglassesGui extends JFrame{
 					color(verify());
 				}
 			}
-			
+
 			public boolean verify(){
 				boolean ret = false;
-				
+
 				try{
 					Double.valueOf(textField.getText());
 					ret = true;
 				} catch (NumberFormatException e){
 					ret = false;
 				}
-				
+
 				return ret;
 			}
-			
+
 			public void color(boolean good){
 				if(good){
 					textField.setBackground(defaultColor);
