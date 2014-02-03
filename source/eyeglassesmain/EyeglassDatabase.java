@@ -56,12 +56,10 @@ public class EyeglassDatabase {
 			}
 
 
-			if(raxis > 180){
-				raxis = raxis - 180;
-			} else if(raxis < 0){
-				raxis = raxis + 180;
-			} else if(raxis == 0){
-				raxis = 180;
+			raxis = raxis % 180;
+			
+			if(raxis < 0){
+				raxis = raxis % 180 + 180;
 			}
 			
 			if(rcyl == 0 || rcyl + 0.75 == 0){
@@ -108,12 +106,10 @@ public class EyeglassDatabase {
 				}
 			}
 
-			if(laxis > 180){
-				laxis = laxis - 180;
-			} else if(laxis < 0){
-				laxis = laxis + 180;
-			} else if(laxis == 0){
-				laxis = 180;
+			laxis = laxis % 180;
+			
+			if(laxis < 0){
+				laxis = laxis % 180 + 180;
 			}
 			
 			if(lcyl == 0 || lcyl + 0.75 == 0){
