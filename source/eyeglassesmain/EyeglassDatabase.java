@@ -59,18 +59,13 @@ public class EyeglassDatabase {
 				}
 			}
 
-
 			raxis = raxis % 180;
-
-			if(raxis < 0){
-				raxis = raxis % 180 + 180;
-			}
 
 			if(rcyl == 0 || rcyl + 0.75 == 0){
 				raxis = 0;
 			}
 
-			if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
+			if(!degreeIsBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, glasses.get(i).getNumber())){
 				continue;
 			}
 
@@ -112,15 +107,11 @@ public class EyeglassDatabase {
 
 			laxis = laxis % 180;
 
-			if(laxis < 0){
-				laxis = laxis % 180 + 180;
-			}
-
 			if(lcyl == 0 || lcyl + 0.75 == 0){
 				laxis = 0;
 			}
 
-			if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){
+			if(!degreeIsBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, glasses.get(i).getNumber())){
 				continue;
 			}
 
@@ -142,5 +133,34 @@ public class EyeglassDatabase {
 		} else{
 			return (num > low) && (num < high);
 		}
+	}
+
+	public boolean degreeIsBetween(int deg, int low, int high, int glassesnum){
+		low = low % 180;
+		high = high % 180;
+
+		if(low < 0){
+			low = low + 180;
+		}
+
+		if(high < 0){
+			high = high + 180;
+		}
+
+		if(high > low){
+			if(deg >= low && deg <= high){
+				return true;
+			} else{
+				return false;
+			}
+		} else{
+			if(deg <= high && deg <= low){
+				return true;
+			} else{
+				return false;
+			}
+		}
+
+
 	}
 }

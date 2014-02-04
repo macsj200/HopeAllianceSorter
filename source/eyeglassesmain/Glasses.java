@@ -17,15 +17,7 @@ public class Glasses {
 		
 		raxis = raxis % 180;
 		
-		if(raxis < 0){
-			raxis = raxis % 180 + 180;
-		}
-		
 		laxis = laxis % 180;
-		
-		if(laxis < 0){
-			laxis = laxis % 180 + 180;
-		}
 
 		if(rcyl == 0 || rcyl + 0.75 == 0){
 			raxis = 0;
