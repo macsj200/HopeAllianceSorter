@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,7 +36,7 @@ import eyeglassesmain.Glasses;
 @SuppressWarnings("serial")
 public class EyeglassesGui extends JFrame{
 	private JPanel inputPanel;
-	private JPanel leftInputPanel;
+	private Box leftInputBox;
 	private JFileChooser fileChooser;
 	private File file;
 	private JButton loadNewFileButton;
@@ -44,7 +45,7 @@ public class EyeglassesGui extends JFrame{
 	private BufferedImage logoImage;
 	private JPanel logoPanel;
 	private Properties prop;
-	private JPanel rightInputPanel;
+	private Box rightInputBox;
 	private LabelInput Rsph;
 	private LabelInput Rcyl;
 	private LabelInput Raxis;
@@ -170,14 +171,12 @@ public class EyeglassesGui extends JFrame{
 
 		searchButton.addActionListener(listener);
 
-		leftInputPanel = new JPanel();
-		leftInputPanel.setLayout(new BoxLayout(leftInputPanel, BoxLayout.Y_AXIS));
+		leftInputBox = new Box(BoxLayout.X_AXIS);
 
-		rightInputPanel = new JPanel();
-		rightInputPanel.setLayout(new BoxLayout(rightInputPanel, BoxLayout.Y_AXIS));
+		rightInputBox = new Box(BoxLayout.X_AXIS);
 
 		inputPanel = new JPanel();
-		inputPanel.setLayout(new BoxLayout(inputPanel,BoxLayout.X_AXIS));
+		inputPanel.setLayout(new BoxLayout(inputPanel,BoxLayout.Y_AXIS));
 
 		int width = 8;
 
@@ -226,15 +225,15 @@ public class EyeglassesGui extends JFrame{
 		filePanel.add(fileLabel);
 		filePanel.add(loadNewFileButton);
 
-		rightInputPanel.add(Rsph);
-		rightInputPanel.add(Rcyl);
-		rightInputPanel.add(Raxis);
-		leftInputPanel.add(Lsph);
-		leftInputPanel.add(Lcyl);
-		leftInputPanel.add(Laxis);
+		rightInputBox.add(Rsph);
+		rightInputBox.add(Rcyl);
+		rightInputBox.add(Raxis);
+		leftInputBox.add(Lsph);
+		leftInputBox.add(Lcyl);
+		leftInputBox.add(Laxis);
 
-		inputPanel.add(rightInputPanel);
-		inputPanel.add(leftInputPanel);
+		inputPanel.add(rightInputBox);
+		inputPanel.add(leftInputBox);
 
 		outputPanel.add(results);
 		outputPanel.add(numberOfResultsLabel);
