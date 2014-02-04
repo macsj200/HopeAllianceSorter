@@ -31,6 +31,7 @@ import javax.swing.event.DocumentListener;
 
 import eyeglassesmain.EyeglassDatabase;
 import eyeglassesmain.EyeglassesMain;
+import eyeglassesmain.FormattingException;
 import eyeglassesmain.Glasses;
 
 @SuppressWarnings("serial")
@@ -186,7 +187,7 @@ public class EyeglassesGui extends JFrame{
 		Lsph = new LabelInput("Lsph: ", width, false);
 		Lcyl = new LabelInput("Lcyl: ", width, false);
 		Laxis = new LabelInput("Laxis: ", width, true);
-		
+
 		Raxis.getInput().getDocument().putProperty("owner", Raxis);
 		Laxis.getInput().getDocument().putProperty("owner", Laxis);
 
@@ -299,17 +300,17 @@ public class EyeglassesGui extends JFrame{
 							loadNewFileButton.setEnabled(false);
 						}
 					});
-					
+
 					try{
 						long time = System.currentTimeMillis();
-						
+
 						database = new EyeglassDatabase(legitFile);
-						
+
 						time = System.currentTimeMillis() - time;
 						System.out.println("read database in " + time + "ms");
 					} catch (org.apache.poi.poifs.filesystem.OfficeXmlFileException e){
-						System.out.println("File is not XLS or something");
-						
+						System.out.println("File is not XLS");
+
 						SwingUtilities.invokeLater(new Runnable(){
 							@Override
 							public void run(){
@@ -318,24 +319,39 @@ public class EyeglassesGui extends JFrame{
 								fileLabel.setText("No file loaded yet");
 							}
 						});
-						
+
 						JOptionPane.showMessageDialog(null, "Couldn't parse file.  Is it a .xls file?","Error", JOptionPane.ERROR_MESSAGE);
-						
+
+						return;
+					} catch (FormattingException e) {
+						System.out.println("There's a formatting problem on " + e.getMsg());
+
+						SwingUtilities.invokeLater(new Runnable(){
+							@Override
+							public void run(){
+								searchButton.setEnabled(false);
+								loadNewFileButton.setEnabled(true);
+								fileLabel.setText("No file loaded yet");
+							}
+						});
+
+						JOptionPane.showMessageDialog(null, "Couldn't parse file.  Error on " + e.getMsg(),"Error", JOptionPane.ERROR_MESSAGE);
+
 						return;
 					}
-					
+
 					System.out.println("Writing path to config: " + legitFile.getAbsolutePath());
-                    prop.setProperty("filepath", legitFile.getAbsolutePath());
+					prop.setProperty("filepath", legitFile.getAbsolutePath());
 
 
-                    try {
-                            prop.store(new FileOutputStream(".config.properties"), null);
-                            System.out.println("Stored config");
-                    } catch (FileNotFoundException e) {
-                            System.out.println("Couldn't save config");
-                    } catch (IOException e) {
-                            System.out.println("Couldn't save config");
-                    }
+					try {
+						prop.store(new FileOutputStream(".config.properties"), null);
+						System.out.println("Stored config");
+					} catch (FileNotFoundException e) {
+						System.out.println("Couldn't save config");
+					} catch (IOException e) {
+						System.out.println("Couldn't save config");
+					}
 
 					SwingUtilities.invokeLater(new Runnable(){
 						@Override

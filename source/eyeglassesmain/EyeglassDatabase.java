@@ -6,15 +6,19 @@ import java.util.ArrayList;
 public class EyeglassDatabase {
 	private ArrayList<Glasses> glasses;
 
-	public EyeglassDatabase(File file){
-		glasses = Reader.readFile(file);
+	public EyeglassDatabase(File file) throws FormattingException{
+		try {
+			glasses = Reader.readFile(file);
+		} catch (FormattingException e) {
+			throw e;
+		}
 		System.out.println("Database read into RAM");
 	}
 
 	public ArrayList<Glasses> getGlasses(){
 		return glasses;
 	}
-	
+
 	public ArrayList<Glasses> search(double rsph, double rcyl, int raxis, double lsph,
 			double lcyl, int laxis){
 		ArrayList<Glasses> hits = new ArrayList<Glasses>();
@@ -57,11 +61,11 @@ public class EyeglassDatabase {
 
 
 			raxis = raxis % 180;
-			
+
 			if(raxis < 0){
 				raxis = raxis % 180 + 180;
 			}
-			
+
 			if(rcyl == 0 || rcyl + 0.75 == 0){
 				raxis = 0;
 			}
@@ -69,7 +73,7 @@ public class EyeglassDatabase {
 			if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
 				continue;
 			}
-			
+
 			if(!isBetween(glasses.get(i).getLcyl(), lcyl, lcyl + 0.75, true)){
 				continue;
 			}
@@ -107,11 +111,11 @@ public class EyeglassDatabase {
 			}
 
 			laxis = laxis % 180;
-			
+
 			if(laxis < 0){
 				laxis = laxis % 180 + 180;
 			}
-			
+
 			if(lcyl == 0 || lcyl + 0.75 == 0){
 				laxis = 0;
 			}

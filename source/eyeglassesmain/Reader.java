@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -15,7 +17,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 public class Reader {
 	private static ArrayList<Glasses> glasses = null;
 
-	public static ArrayList<Glasses> readFile(File file){
+	public static ArrayList<Glasses> readFile(File file) throws FormattingException{
 		POIFSFileSystem fs = null;
 		HSSFSheet sheet = null;
 		HSSFRow row = null;
@@ -58,17 +60,25 @@ public class Reader {
 
 		do{
 			try{
-				number = Integer.valueOf(row.getCell(0).toString().split("\\.")[0]);
+				try{
+					number = Integer.valueOf(row.getCell(0).toString().split("\\.")[0]);
+				} catch (NullPointerException e){
+					throw new FormattingException("Error on cell " + 0 + " row " + i);
+				}
 			} catch (NumberFormatException e){
 				blanks = blanks + 1;
 				number = 0;
 			}
 			try{
-				if(row.getCell(1).toString().equals("")){
-					empty = true;
-				}
-				else{
-					empty = false;
+				try{
+					if(row.getCell(1).toString().equals("")){
+						empty = true;
+					}
+					else{
+						empty = false;
+					}
+				} catch (NullPointerException e){
+					throw new FormattingException("Error on cell " + 1 + " row " + i);
 				}
 				Rsph = Double.valueOf(row.getCell(1).toString());
 			} catch (NumberFormatException e){
@@ -76,43 +86,71 @@ public class Reader {
 				Rsph = 0.0;
 			}
 			try{
-				Rcyl = Double.valueOf(row.getCell(2).toString());
+				try{
+					Rcyl = Double.valueOf(row.getCell(2).toString());
+				} catch (NullPointerException e){
+					throw new FormattingException("Error on cell " + 2 + " row " + i);
+				}
 			} catch (NumberFormatException e){
 				blanks = blanks + 1;
 				Rcyl = 0.0;
 			}
 			try{
-				Raxis = Integer.valueOf(row.getCell(3).toString().split("\\.")[0]);
+				try{
+					Raxis = Integer.valueOf(row.getCell(3).toString().split("\\.")[0]);
+				} catch (NullPointerException e){
+					throw new FormattingException("Error on cell " + 3 + " row " + i);
+				}
 			} catch (NumberFormatException e){
 				blanks = blanks + 1;
 				Raxis = 0;
 			}
 			try{
-				Lsph = Double.valueOf(row.getCell(4).toString());
+				try{
+					Lsph = Double.valueOf(row.getCell(4).toString());
+				} catch (NullPointerException e){
+					throw new FormattingException("Error on cell " + 4 + " row " + i);
+				}
 			} catch (NumberFormatException e){
 				blanks = blanks + 1;
 				Lsph = 0.0;
 			}
 			try{
-				Lcyl = Double.valueOf(row.getCell(5).toString());
+				try{
+					Lcyl = Double.valueOf(row.getCell(5).toString());
+				} catch (NullPointerException e){
+					throw new FormattingException("Error on cell " + 5 + " row " + i);
+				}
 			} catch (NumberFormatException e){
 				blanks = blanks + 1;
 				Lcyl = 0.0;
 			}
 			try{
-				Laxis = Integer.valueOf(row.getCell(6).toString().split("\\.")[0]);
+				try{
+					Laxis = Integer.valueOf(row.getCell(6).toString().split("\\.")[0]);
+				} catch (NullPointerException e){
+					throw new FormattingException("Error on cell " + 6 + " row " + i);
+				}
 			} catch (NumberFormatException e){
 				blanks = blanks + 1;
 				Laxis = 0;
 			}
 
-			frame = row.getCell(7).toString();
+			try{
+				frame = row.getCell(7).toString();
+			} catch (NullPointerException e){
+				throw new FormattingException("Error on cell " + 7 + " row " + i);
+			}
 			if(frame.equals("")){
 				frame = "N/A";
 				blanks = blanks + 1;
 			}
 
-			lens = row.getCell(8).toString();
+			try{
+				lens = row.getCell(8).toString();
+			} catch (NullPointerException e){
+				throw new FormattingException("Error on cell " + 8 + " row " + i);
+			}
 			if(lens.equals("")){
 				lens = "N/A";
 				blanks = blanks + 1;
@@ -130,6 +168,7 @@ public class Reader {
 
 		System.out.println("Blank cells: " + blanks);
 		System.out.println("Empties: " + empties);
+
 		return glasses;
 	}
 }
