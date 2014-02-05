@@ -267,7 +267,7 @@ public class EyeglassesGui extends JFrame{
 		
 		results.clear();
 		results.write("Number", big);
-		results.write("\tRsph\tRcyl\tRaxis\tLsph\tLcyl\tLaxis\tFrame\tLens\n\n", plain);
+		results.write("\tRsph\tRcyl\tRaxis\tLsph\tLcyl\tLaxis\tFrame\t\tLens\n\n", plain);
 		
 		for(int i = 0; i < list.size(); i++){
 			results.write(list.get(i).getNumber() + "\t", big);
@@ -277,7 +277,7 @@ public class EyeglassesGui extends JFrame{
 			results.write(list.get(i).getLsph() + "\t", plain);
 			results.write(list.get(i).getLcyl() + "\t", plain);
 			results.write(list.get(i).getLaxis() + "\t", plain);
-			results.write(list.get(i).getFrame() + "\t", plain);
+			results.write(list.get(i).getFrame() + "\t\t", plain);
 			results.write(list.get(i).getLens() + "\n", plain);
 		}
 	}
