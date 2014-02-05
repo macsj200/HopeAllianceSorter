@@ -3,6 +3,7 @@ package eyeglassesgui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -28,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 
 import eyeglassesmain.EyeglassDatabase;
 import eyeglassesmain.EyeglassesMain;
@@ -123,8 +126,6 @@ public class EyeglassesGui extends JFrame{
 				SwingUtilities.invokeLater(new Runnable(){
 					@Override
 					public void run(){
-						results.clear();
-						results.write("No.\tRSPH\tRCYL\tRAXIS\tLSPH\tLCYL\tLAXIS\tFRAME\tLENS\n\n");
 						writeGlassesList(resultList);
 						numberOfResultsLabel.setText("Number of results: " + resultList.size());
 						searchButton.setEnabled(true);
@@ -252,8 +253,32 @@ public class EyeglassesGui extends JFrame{
 	}
 
 	public void writeGlassesList(ArrayList<Glasses> list){
+		Style big = results.getStyledDoc().addStyle("Big", null);
+		StyleConstants.setForeground(big, Color.blue);
+		StyleConstants.setFontFamily(big, "Monospace");
+		StyleConstants.setFontSize(big, 15);
+		StyleConstants.setBold(big, true);
+		
+		Style plain = results.getStyledDoc().addStyle("Small", null);
+		StyleConstants.setForeground(plain, Color.black);
+		StyleConstants.setFontFamily(plain, "Monospace");
+		StyleConstants.setFontSize(plain, 15);
+		StyleConstants.setBold(plain, false);
+		
+		results.clear();
+		results.write("Number", big);
+		results.write("\tRsph\tRcyl\tRaxis\tLsph\tLcyl\tLaxis\tFrame\tLens\n\n", plain);
+		
 		for(int i = 0; i < list.size(); i++){
-			results.write(list.get(i).toString() + "\n");
+			results.write(list.get(i).getNumber() + "\t", big);
+			results.write(list.get(i).getRsph() + "\t", plain);
+			results.write(list.get(i).getRcyl() + "\t", plain);
+			results.write(list.get(i).getRaxis() + "\t", plain);
+			results.write(list.get(i).getLsph() + "\t", plain);
+			results.write(list.get(i).getLcyl() + "\t", plain);
+			results.write(list.get(i).getLaxis() + "\t", plain);
+			results.write(list.get(i).getFrame() + "\t", plain);
+			results.write(list.get(i).getLens() + "\n", plain);
 		}
 	}
 

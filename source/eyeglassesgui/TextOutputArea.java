@@ -7,6 +7,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
 import javax.swing.text.StyledDocument;
 
 @SuppressWarnings("serial")
@@ -28,13 +29,21 @@ public class TextOutputArea extends Box{
 
 		add(scrollPane);
 	}
+	
+	public StyledDocument getStyledDoc(){
+		return doc;
+	}
 
-	public void write(String s) {
+	public void write(Object o, Style style) {
 		try {
-			doc.insertString(doc.getLength(), s, null);
+			doc.insertString(doc.getLength(), o.toString(), style);
 		} catch (BadLocationException e) {
 			System.out.println("bad loc");
 		}
+	}
+	
+	public void write(Object o) {
+		write(o, null);
 	}
 	
 	public void clear(){
