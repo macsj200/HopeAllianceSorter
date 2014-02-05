@@ -10,7 +10,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
 @SuppressWarnings("serial")
-public class TextOutputArea extends Box implements GuiWritable {
+public class TextOutputArea extends Box{
 	private JTextPane outputArea = null;
 	private JScrollPane scrollPane = null;
 	private StyledDocument doc = null;
@@ -29,7 +29,6 @@ public class TextOutputArea extends Box implements GuiWritable {
 		add(scrollPane);
 	}
 
-	@Override
 	public void write(String s) {
 		try {
 			doc.insertString(doc.getLength(), s, null);
