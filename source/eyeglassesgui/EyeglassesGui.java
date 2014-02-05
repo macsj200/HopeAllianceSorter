@@ -67,10 +67,10 @@ public class EyeglassesGui extends JFrame{
 
 		fileChooser = new JFileChooser();
 
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.setPreferredSize(new Dimension(1050,600));
+		this.setPreferredSize(new Dimension(1050,690));
 
 		initAndAddComponents();
 		pack();
@@ -181,12 +181,12 @@ public class EyeglassesGui extends JFrame{
 
 		int width = 8;
 
-		Rsph = new LabelInput("Rsph: ", width, false);
-		Rcyl = new LabelInput("Rcyl: ", width, false);
-		Raxis = new LabelInput("Raxis: ", width, true);
-		Lsph = new LabelInput("Lsph: ", width, false);
-		Lcyl = new LabelInput("Lcyl: ", width, false);
-		Laxis = new LabelInput("Laxis: ", width, true);
+		Rsph = new LabelInput("Right sphere: ", width, false);
+		Rcyl = new LabelInput("Right cylinder: ", width, false);
+		Raxis = new LabelInput("Right axis: ", width, true);
+		Lsph = new LabelInput("Left sphere: ", width, false);
+		Lcyl = new LabelInput("Left cylinder: ", width, false);
+		Laxis = new LabelInput("Left axis: ", width, true);
 
 		Raxis.getInput().getDocument().putProperty("owner", Raxis);
 		Laxis.getInput().getDocument().putProperty("owner", Laxis);
@@ -205,7 +205,7 @@ public class EyeglassesGui extends JFrame{
 		addDocumentListenerTo(Lcyl.getInput());
 		addDocumentListenerTo(Laxis.getInput());
 
-		results = new TextOutputArea(20, 70);
+		results = new TextOutputArea();
 
 		fileLabel = new JLabel("No file loaded yet");
 		loadNewFileButton = new JButton("Load new file");
@@ -237,12 +237,12 @@ public class EyeglassesGui extends JFrame{
 		inputPanel.add(leftInputBox);
 
 		outputPanel.add(results);
-		outputPanel.add(numberOfResultsLabel);
 
 		getContentPane().add(logoPanel);
 		getContentPane().add(inputPanel);
 		getContentPane().add(outputPanel);
 		getContentPane().add(searchButton);
+		getContentPane().add(numberOfResultsLabel);
 		getContentPane().add(filePanel);
 	}
 

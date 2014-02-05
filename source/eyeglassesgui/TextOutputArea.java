@@ -1,28 +1,41 @@
 package eyeglassesgui;
 
+import java.awt.Dimension;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
 
 @SuppressWarnings("serial")
 public class TextOutputArea extends Box implements GuiWritable {
-	private JTextArea outputArea = null;
+	private JTextPane outputArea = null;
 	private JScrollPane scrollPane = null;
+	private StyledDocument doc = null;
 
-	public TextOutputArea(int rows, int columns) {
+	public TextOutputArea() {
 		super(BoxLayout.X_AXIS);
-		outputArea = new JTextArea(rows, columns);
+		outputArea = new JTextPane();
 		outputArea.setEditable(false);
+		
 		scrollPane = new JScrollPane(outputArea);
+		
+		scrollPane.setPreferredSize(new Dimension(1000, 400));
+		
+		doc = outputArea.getStyledDocument();
 
 		add(scrollPane);
 	}
 
 	@Override
 	public void write(String s) {
-		outputArea.append(s);
-		outputArea.setCaretPosition(outputArea.getDocument().getLength());
+		try {
+			doc.insertString(doc.getLength(), s, null);
+		} catch (BadLocationException e) {
+			System.out.println("bad loc");
+		}
 	}
 	
 	public void clear(){
