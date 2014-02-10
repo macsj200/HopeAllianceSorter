@@ -19,22 +19,36 @@ public class EyeglassDatabase {
 		return glasses;
 	}
 
+	/*
+	 * 
+	 * This is the main search routine for glasses
+	 * 
+	 * Searches through read-in database and returns that array filtered
+	 * 
+	 */
 	public ArrayList<Glasses> search(double rsph, double rcyl, int raxis, double lsph,
 			double lcyl, int laxis){
 		ArrayList<Glasses> hits = new ArrayList<Glasses>();
 
+		//Iterate through existing glasses
 		for(int i = 0; i < glasses.size(); i++){
+			
+			/*If rcyl of glasses is not between rcyl parameter and rcyl parameter + 0.75 filter out*/
 			if(!isBetween(glasses.get(i).getRcyl(), rcyl, rcyl + 0.75, true)){
 				continue;
 			}
 
 			if(rsph == 0){
+				/*if rsph search parameter is zero and glasses rsph is not between rsph parameter +/- 0.25 filter out*/
 				if(!isBetween(glasses.get(i).getRsph(), rsph - 0.25, rsph + 0.25, true)){
 					continue;
 				}
 			}
 
 			if(rsph > 0){
+				/*if rsph search parameter is greater than zero and glasses rsph is not between rsph parameter and
+				 * rsph parameter - 0.5 filter out
+				*/
 				if(!isBetween(glasses.get(i).getRsph(), rsph - 0.5, rsph, true)){
 					continue;
 				}
