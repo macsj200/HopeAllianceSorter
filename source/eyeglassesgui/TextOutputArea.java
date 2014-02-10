@@ -10,6 +10,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyledDocument;
 
+import eyeglassesmain.EyeglassesMain;
+
 @SuppressWarnings("serial")
 public class TextOutputArea extends Box{
 	private JTextPane outputArea = null;
@@ -38,7 +40,7 @@ public class TextOutputArea extends Box{
 		try {
 			doc.insertString(doc.getLength(), o.toString(), style);
 		} catch (BadLocationException e) {
-			System.out.println("bad loc");
+			EyeglassesMain.log("bad loc", true);
 		}
 	}
 	

@@ -80,7 +80,7 @@ public class EyeglassesGui extends JFrame{
 
 		try {
 			prop.load(new FileInputStream(configFile));
-			System.out.println("Config file exists, reading");
+			EyeglassesMain.log("Config file exists, reading");
 
 			file = new File(prop.getProperty("filepath"));
 
@@ -89,9 +89,9 @@ public class EyeglassesGui extends JFrame{
 			}
 
 		} catch (FileNotFoundException e) {
-			System.out.println("Couldn't find config");
+			EyeglassesMain.log("Couldn't find config", true);
 		} catch (IOException e) {
-			System.out.println("Couldn't read config");
+			EyeglassesMain.log("Couldn't read config", true);
 		} finally{
 			loadNewFile(file);
 		}
@@ -115,10 +115,10 @@ public class EyeglassesGui extends JFrame{
 				time = System.currentTimeMillis();
 				resultList = searchAndCompare();
 				time = System.currentTimeMillis() - time;
-				System.out.println("Search completed in " + time + "ms." + "  Results: " + resultList.size());
+				EyeglassesMain.log("Search completed in " + time + "ms." + "  Results: " + resultList.size());
 				worked = true;
 			} catch (NumberFormatException e){
-				System.out.println("Couldn't process search parameters.");
+				EyeglassesMain.log("Couldn't process search parameters.", true);
 				JOptionPane.showMessageDialog(null, "Couldn't process search parameters.","Error", JOptionPane.ERROR_MESSAGE);
 			}
 
@@ -152,7 +152,7 @@ public class EyeglassesGui extends JFrame{
 		try {
 			logoImage = ImageIO.read(getClass().getResource("/imgs/colored_logo.jpg"));
 		} catch (IOException e) {
-			System.out.println("Couldn't find logo file");
+			EyeglassesMain.log("Couldn't find logo file", true);
 		}
 
 		logoPanel = new JPanel();
@@ -287,7 +287,7 @@ public class EyeglassesGui extends JFrame{
 		boolean openFile = true;
 
 		if(pFile == null){
-			System.out.println("prompting for file");
+			EyeglassesMain.log("prompting for file");
 			int retVal;
 
 			do{
@@ -296,16 +296,16 @@ public class EyeglassesGui extends JFrame{
 				pFile = fileChooser.getSelectedFile();
 
 				if(retVal == JFileChooser.CANCEL_OPTION){
-					System.out.println("Cancel selected.");
+					EyeglassesMain.log("Cancel selected.");
 					openFile = false;
 					break;
 				}
 				else if(retVal != JFileChooser.APPROVE_OPTION){
-					System.out.println("File selection failed");
+					EyeglassesMain.log("File selection failed", true);
 					JOptionPane.showMessageDialog(this, "Couldn't open file.","Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else{
-					System.out.println("Sucessfully opened file");
+					EyeglassesMain.log("Sucessfully opened file");
 					openFile = true;
 				}
 
@@ -332,9 +332,9 @@ public class EyeglassesGui extends JFrame{
 						database = new EyeglassDatabase(legitFile);
 
 						time = System.currentTimeMillis() - time;
-						System.out.println("read database in " + time + "ms");
+						EyeglassesMain.log("read database in " + time + "ms");
 					} catch (org.apache.poi.poifs.filesystem.OfficeXmlFileException e){
-						System.out.println("File is not XLS");
+						EyeglassesMain.log("File is not XLS", true);
 
 						SwingUtilities.invokeLater(new Runnable(){
 							@Override
@@ -349,7 +349,7 @@ public class EyeglassesGui extends JFrame{
 
 						return;
 					} catch (FormattingException e) {
-						System.out.println("There's a formatting problem on " + e.getMsg());
+						EyeglassesMain.log("There's a formatting problem on " + e.getMsg(), true);
 
 						SwingUtilities.invokeLater(new Runnable(){
 							@Override
@@ -365,17 +365,17 @@ public class EyeglassesGui extends JFrame{
 						return;
 					}
 
-					System.out.println("Writing path to config: " + legitFile.getAbsolutePath());
+					EyeglassesMain.log("Writing path to config: " + legitFile.getAbsolutePath());
 					prop.setProperty("filepath", legitFile.getAbsolutePath());
 
 
 					try {
 						prop.store(new FileOutputStream(".config.properties"), null);
-						System.out.println("Stored config");
+						EyeglassesMain.log("Stored config");
 					} catch (FileNotFoundException e) {
-						System.out.println("Couldn't save config");
+						EyeglassesMain.log("Couldn't save config", true);
 					} catch (IOException e) {
-						System.out.println("Couldn't save config");
+						EyeglassesMain.log("Couldn't save config", true);
 					}
 
 					SwingUtilities.invokeLater(new Runnable(){
@@ -404,7 +404,7 @@ public class EyeglassesGui extends JFrame{
 	public class SearcherListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent ae){
-			System.out.println("Start search");
+			EyeglassesMain.log("Start search");
 			(new Thread(new Searcher())).start();
 		}
 	}

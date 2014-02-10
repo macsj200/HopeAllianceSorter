@@ -25,15 +25,15 @@ public class Reader {
 		try {
 			fs = new POIFSFileSystem(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
-			System.out.println("Couldn't find file");
+			EyeglassesMain.log("Couldn't find file", true);
 		} catch (IOException e) {
-			System.out.println("Couldn't read file");
+			EyeglassesMain.log("Couldn't read file", true);
 		}
 		HSSFWorkbook wb = null;
 		try {
 			wb = new HSSFWorkbook(fs);
 		} catch (IOException e) {
-			System.out.println("Couldn't read file");
+			EyeglassesMain.log("Couldn't read file", true);
 		}
 
 		sheet =  wb.getSheetAt(0);
@@ -166,8 +166,8 @@ public class Reader {
 			row = sheet.getRow(i);
 		} while(row != null);
 
-		System.out.println("Blank cells: " + blanks);
-		System.out.println("Empties: " + empties);
+		EyeglassesMain.log("Blank cells: " + blanks);
+		EyeglassesMain.log("Empties: " + empties);
 
 		return glasses;
 	}

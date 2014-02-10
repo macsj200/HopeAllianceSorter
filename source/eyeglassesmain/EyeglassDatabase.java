@@ -12,7 +12,7 @@ public class EyeglassDatabase {
 		} catch (FormattingException e) {
 			throw e;
 		}
-		System.out.println("Database read into RAM");
+		EyeglassesMain.log("Database read into RAM");
 	}
 
 	public ArrayList<Glasses> getGlasses(){
