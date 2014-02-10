@@ -70,7 +70,7 @@ public class EyeglassesGui extends JFrame{
 
 		fileChooser = new JFileChooser();
 
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		getContentPane().setLayout(new FlowLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		this.setPreferredSize(new Dimension(1050,690));

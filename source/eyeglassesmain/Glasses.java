@@ -19,11 +19,11 @@ public class Glasses {
 		
 		laxis = laxis % 180;
 
-		if(rcyl == 0 || rcyl + 0.75 == 0){
+		if(rcyl == 0){
 			raxis = 0;
 		}
 
-		if(lcyl == 0 || lcyl + 0.75 == 0){
+		if(lcyl == 0){
 			laxis = 0;
 		}
 

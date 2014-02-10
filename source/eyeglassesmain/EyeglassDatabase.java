@@ -61,11 +61,11 @@ public class EyeglassDatabase {
 
 			raxis = raxis % 180;
 
-			if(rcyl == 0 || rcyl + 0.75 == 0){
+			if(rcyl == 0){
 				raxis = 0;
 			}
 
-			if(!degreeIsBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, glasses.get(i).getNumber())){
+			if(!degreeIsBetween(glasses.get(i).getRaxis() + 180, raxis - 20 + 180, raxis + 20 + 180, glasses.get(i).getNumber())){
 				continue;
 			}
 
@@ -107,11 +107,11 @@ public class EyeglassDatabase {
 
 			laxis = laxis % 180;
 
-			if(lcyl == 0 || lcyl + 0.75 == 0){
+			if(lcyl == 0){
 				laxis = 0;
 			}
 
-			if(!degreeIsBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, glasses.get(i).getNumber())){
+			if(!degreeIsBetween(glasses.get(i).getLaxis() + 180, laxis - 20 + 180, laxis + 20 + 180, glasses.get(i).getNumber())){
 				continue;
 			}
 
