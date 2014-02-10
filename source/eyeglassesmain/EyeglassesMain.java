@@ -1,5 +1,7 @@
 package eyeglassesmain;
 
+import javax.swing.JOptionPane;
+
 import eyeglassesgui.EyeglassesGui;
 
 public class EyeglassesMain {
@@ -11,6 +13,8 @@ public class EyeglassesMain {
 
 	public static void log(Object o, boolean error){
 		if(error){
+			JOptionPane.showMessageDialog(null, o,"Error", JOptionPane.ERROR_MESSAGE);
+			
 			System.err.println(o);
 		}
 		else{

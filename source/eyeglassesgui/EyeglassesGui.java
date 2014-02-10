@@ -23,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -118,9 +117,7 @@ public class EyeglassesGui extends JFrame{
 				EyeglassesMain.log("Search completed in " + time + "ms." + "  Results: " + resultList.size());
 				worked = true;
 			} catch (NumberFormatException e){
-				EyeglassesMain.log("Couldn't process search parameters.", true);
-				JOptionPane.showMessageDialog(null, "Couldn't process search parameters.","Error", JOptionPane.ERROR_MESSAGE);
-			}
+				EyeglassesMain.log("Couldn't process search parameters.", true);			}
 
 			if(worked){
 				SwingUtilities.invokeLater(new Runnable(){
@@ -301,9 +298,7 @@ public class EyeglassesGui extends JFrame{
 					break;
 				}
 				else if(retVal != JFileChooser.APPROVE_OPTION){
-					EyeglassesMain.log("File selection failed", true);
-					JOptionPane.showMessageDialog(this, "Couldn't open file.","Error", JOptionPane.ERROR_MESSAGE);
-				}
+					EyeglassesMain.log("File selection failed", true);				}
 				else{
 					EyeglassesMain.log("Sucessfully opened file");
 					openFile = true;
@@ -344,9 +339,7 @@ public class EyeglassesGui extends JFrame{
 								fileLabel.setText("No file loaded yet");
 							}
 						});
-
-						JOptionPane.showMessageDialog(null, "Couldn't parse file.  Is it a .xls file?","Error", JOptionPane.ERROR_MESSAGE);
-
+						
 						return;
 					} catch (FormattingException e) {
 						EyeglassesMain.log("There's a formatting problem on " + e.getMsg(), true);
@@ -359,9 +352,7 @@ public class EyeglassesGui extends JFrame{
 								fileLabel.setText("No file loaded yet");
 							}
 						});
-
-						JOptionPane.showMessageDialog(null, "Couldn't parse file.  Error on " + e.getMsg(),"Error", JOptionPane.ERROR_MESSAGE);
-
+						
 						return;
 					}
 
