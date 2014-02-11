@@ -28,14 +28,10 @@ public class EyeglassDatabase {
 	 */
 	public ArrayList<Glasses> search(double rsph, double rcyl, int raxis, double lsph,
 			double lcyl, int laxis){
-		boolean rfunny = false;
-		boolean lfunny = false;
 		ArrayList<Glasses> hits = new ArrayList<Glasses>();
 
 		//Iterate through existing glasses
 		for(int i = 0; i < glasses.size(); i++){
-			rfunny = false;
-			lfunny = false;
 
 			/*If rcyl of glasses is not between rcyl parameter and rcyl parameter + 0.75 filter out*/
 			if(!isBetween(glasses.get(i).getRcyl(), rcyl, rcyl + 0.75, true)){
@@ -84,26 +80,22 @@ public class EyeglassDatabase {
 			}
 
 			if(raxis + 20 > 180){
-				raxis = raxis + 20 - 180;
-				rfunny = true;
+				if(!(glasses.get(i).getRaxis() <= raxis + 20 - 180 || glasses.get(i).getRaxis() >= raxis - 20)){
+					continue;
+				}
 			}
 			else if(raxis - 20 < 0){
-				raxis = raxis - 20 + 180;
-				rfunny = true;
-			}
-			
-			if(!rfunny){
-				if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
+				if(!(glasses.get(i).getRaxis() <= raxis + 20 || glasses.get(i).getRaxis() >= raxis - 20 + 180)){
 					continue;
 				}
 			}
 			else{
-				if(!(glasses.get(i).getRaxis() <= raxis + 20 || glasses.get(i).getRaxis() >= raxis - 20)){
+				if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20, true)){
 					continue;
 				}
 			}
 
-			
+
 
 			if(!isBetween(glasses.get(i).getLcyl(), lcyl, lcyl + 0.75, true)){
 				continue;
@@ -149,21 +141,17 @@ public class EyeglassDatabase {
 
 
 			if(laxis + 20 > 180){
-				laxis = laxis + 20 - 180;
-				lfunny = true;
+				if(!(glasses.get(i).getLaxis() <= laxis + 20 - 180 || glasses.get(i).getLaxis() >= laxis - 20)){
+					continue;
+				}
 			}
 			else if(laxis - 20 < 0){
-				laxis = laxis - 20 + 180;
-				lfunny = true;
-			}
-			
-			if(!lfunny){
-				if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){
+				if(!(glasses.get(i).getLaxis() <= laxis + 20 || glasses.get(i).getLaxis() >= laxis - 20 + 180)){
 					continue;
 				}
 			}
 			else{
-				if(!(glasses.get(i).getLaxis() <= laxis + 20 || glasses.get(i).getLaxis() >= laxis - 20)){
+				if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20, true)){
 					continue;
 				}
 			}
