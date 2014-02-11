@@ -29,9 +29,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.TableColumn;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
 
 import eyeglassesmain.EyeglassDatabase;
 import eyeglassesmain.EyeglassesMain;
@@ -61,11 +58,9 @@ public class EyeglassesGui extends JFrame{
 	private LabelInput Lcyl;
 	private LabelInput Laxis;
 	private JButton searchButton;
-	private TextOutputArea results;
 	private EyeglassDatabase database;
 	private ArrayList<Glasses> resultList;
 	private JLabel numberOfResultsLabel;
-	private JPanel outputPanel;
 
 	public EyeglassesGui(){
 		super("HopeSearch v" + EyeglassesMain.VERSION);
@@ -140,8 +135,6 @@ public class EyeglassesGui extends JFrame{
 				SwingUtilities.invokeLater(new Runnable(){
 					@Override
 					public void run(){
-						results.clear();
-						results.write("Error");
 						numberOfResultsLabel.setText("Number of results: N/A");
 						searchButton.setEnabled(true);
 					}
@@ -169,9 +162,6 @@ public class EyeglassesGui extends JFrame{
 		searchButton.setEnabled(false);
 
 		numberOfResultsLabel = new JLabel("Number of results: N/A");
-
-		outputPanel = new JPanel();
-		outputPanel.setLayout(new FlowLayout());
 
 		SearcherListener listener = new SearcherListener();
 
@@ -210,8 +200,6 @@ public class EyeglassesGui extends JFrame{
 		addDocumentListenerTo(Lcyl.getInput());
 		addDocumentListenerTo(Laxis.getInput());
 
-		results = new TextOutputArea();
-
 		fileLabel = new JLabel("No file loaded yet");
 		loadNewFileButton = new JButton("Load new file");
 
@@ -247,8 +235,6 @@ public class EyeglassesGui extends JFrame{
 		
 		outputScrollPane.setPreferredSize(new Dimension(1000, 400));
 
-		outputPanel.add(results);
-
 		getContentPane().add(logoPanel);
 		getContentPane().add(inputPanel);
 		getContentPane().add(outputScrollPane);
@@ -260,36 +246,6 @@ public class EyeglassesGui extends JFrame{
 	public ArrayList<Glasses> searchAndCompare(){
 		return database.search(Rsph.getInput().getText(), Rcyl.getInput().getText(), Raxis.getInput().getText(), 
 				Lsph.getInput().getText(), Lcyl.getInput().getText(), Laxis.getInput().getText());
-	}
-
-	public void writeGlassesList(ArrayList<Glasses> list){
-		Style big = results.getStyledDoc().addStyle("Big", null);
-		StyleConstants.setForeground(big, Color.blue);
-		StyleConstants.setFontFamily(big, "Monospace");
-		StyleConstants.setFontSize(big, 15);
-		StyleConstants.setBold(big, true);
-
-		Style plain = results.getStyledDoc().addStyle("Small", null);
-		StyleConstants.setForeground(plain, Color.black);
-		StyleConstants.setFontFamily(plain, "Monospace");
-		StyleConstants.setFontSize(plain, 15);
-		StyleConstants.setBold(plain, false);
-
-		results.clear();
-		results.write("Number", big);
-		results.write("\tRsph\tRcyl\tRaxis\tLsph\tLcyl\tLaxis\tFrame\t\tLens\n\n", plain);
-
-		for(int i = 0; i < list.size(); i++){
-			results.write(list.get(i).getNumber() + "\t", big);
-			results.write(list.get(i).getRsph() + "\t", plain);
-			results.write(list.get(i).getRcyl() + "\t", plain);
-			results.write(list.get(i).getRaxis() + "\t", plain);
-			results.write(list.get(i).getLsph() + "\t", plain);
-			results.write(list.get(i).getLcyl() + "\t", plain);
-			results.write(list.get(i).getLaxis() + "\t", plain);
-			results.write(list.get(i).getFrame() + "\t\t", plain);
-			results.write(list.get(i).getLens() + "\n", plain);
-		}
 	}
 
 	private void loadNewFile(File pFile){
