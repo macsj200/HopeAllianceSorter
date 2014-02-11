@@ -220,10 +220,14 @@ public class EyeglassesGui extends JFrame{
 		filePanel.add(loadNewFileButton);
 
 		rightInputBox.add(Rsph);
+		rightInputBox.add(Box.createHorizontalStrut(3));
 		rightInputBox.add(Rcyl);
+		rightInputBox.add(Box.createHorizontalStrut(3));
 		rightInputBox.add(Raxis);
 		leftInputBox.add(Lsph);
+		leftInputBox.add(Box.createHorizontalStrut(3));
 		leftInputBox.add(Lcyl);
+		leftInputBox.add(Box.createHorizontalStrut(3));
 		leftInputBox.add(Laxis);
 
 		inputPanel.add(rightInputBox);
