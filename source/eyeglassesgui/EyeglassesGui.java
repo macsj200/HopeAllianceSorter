@@ -3,7 +3,6 @@ package eyeglassesgui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -24,10 +23,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.TableColumn;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
@@ -40,8 +42,11 @@ import eyeglassesmain.Glasses;
 public class EyeglassesGui extends JFrame{
 	private JPanel inputPanel;
 	private Box leftInputBox;
+	private GlassesTableModel tModel;
 	private JFileChooser fileChooser;
 	private File file;
+	private JTable outputTable;
+	private JScrollPane outputScrollPane;
 	private JButton loadNewFileButton;
 	private JPanel filePanel;
 	private JLabel fileLabel;
@@ -117,13 +122,15 @@ public class EyeglassesGui extends JFrame{
 				EyeglassesMain.log("Search completed in " + time + "ms." + "  Results: " + resultList.size());
 				worked = true;
 			} catch (NumberFormatException e){
-				EyeglassesMain.log("Couldn't process search parameters.", true);			}
+				EyeglassesMain.log("Couldn't process search parameters.", true);			
+			}
 
 			if(worked){
 				SwingUtilities.invokeLater(new Runnable(){
 					@Override
 					public void run(){
-						writeGlassesList(resultList);
+						tModel = new GlassesTableModel(resultList);
+						outputTable.setModel(tModel);
 						numberOfResultsLabel.setText("Number of results: " + resultList.size());
 						searchButton.setEnabled(true);
 					}
@@ -234,11 +241,14 @@ public class EyeglassesGui extends JFrame{
 		inputPanel.add(rightInputBox);
 		inputPanel.add(leftInputBox);
 
+		outputTable = new JTable();
+		outputScrollPane = new JScrollPane(outputTable);
+
 		outputPanel.add(results);
 
 		getContentPane().add(logoPanel);
 		getContentPane().add(inputPanel);
-		getContentPane().add(outputPanel);
+		getContentPane().add(outputScrollPane);
 		getContentPane().add(searchButton);
 		getContentPane().add(numberOfResultsLabel);
 		getContentPane().add(filePanel);
@@ -255,17 +265,17 @@ public class EyeglassesGui extends JFrame{
 		StyleConstants.setFontFamily(big, "Monospace");
 		StyleConstants.setFontSize(big, 15);
 		StyleConstants.setBold(big, true);
-		
+
 		Style plain = results.getStyledDoc().addStyle("Small", null);
 		StyleConstants.setForeground(plain, Color.black);
 		StyleConstants.setFontFamily(plain, "Monospace");
 		StyleConstants.setFontSize(plain, 15);
 		StyleConstants.setBold(plain, false);
-		
+
 		results.clear();
 		results.write("Number", big);
 		results.write("\tRsph\tRcyl\tRaxis\tLsph\tLcyl\tLaxis\tFrame\t\tLens\n\n", plain);
-		
+
 		for(int i = 0; i < list.size(); i++){
 			results.write(list.get(i).getNumber() + "\t", big);
 			results.write(list.get(i).getRsph() + "\t", plain);
@@ -298,7 +308,8 @@ public class EyeglassesGui extends JFrame{
 					break;
 				}
 				else if(retVal != JFileChooser.APPROVE_OPTION){
-					EyeglassesMain.log("File selection failed", true);				}
+					EyeglassesMain.log("File selection failed", true);				
+				}
 				else{
 					EyeglassesMain.log("Sucessfully opened file");
 					openFile = true;
@@ -339,7 +350,7 @@ public class EyeglassesGui extends JFrame{
 								fileLabel.setText("No file loaded yet");
 							}
 						});
-						
+
 						return;
 					} catch (FormattingException e) {
 						EyeglassesMain.log("There's a formatting problem on " + e.getMsg(), true);
@@ -352,7 +363,7 @@ public class EyeglassesGui extends JFrame{
 								fileLabel.setText("No file loaded yet");
 							}
 						});
-						
+
 						return;
 					}
 
