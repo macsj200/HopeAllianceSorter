@@ -14,7 +14,7 @@ public class GlassesTableModel extends AbstractTableModel{
 
 	public GlassesTableModel(ArrayList<Glasses> glasses){
 		this.glasses = glasses;
-		decimalFormatter = new DecimalFormat("#.##");
+		decimalFormatter = new DecimalFormat("+#0.00;-#0.00");
 	}
 
 	public String getColumnName(int col) {
