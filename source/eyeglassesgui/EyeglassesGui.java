@@ -241,8 +241,11 @@ public class EyeglassesGui extends JFrame{
 		inputPanel.add(rightInputBox);
 		inputPanel.add(leftInputBox);
 
-		outputTable = new JTable();
+		outputTable = new JTable(new GlassesTableModel(new ArrayList<Glasses>()));
+		
 		outputScrollPane = new JScrollPane(outputTable);
+		
+		outputScrollPane.setPreferredSize(new Dimension(1000, 400));
 
 		outputPanel.add(results);
 
