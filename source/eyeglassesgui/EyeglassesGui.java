@@ -182,9 +182,9 @@ public class EyeglassesGui extends JFrame{
 		Rsph = new LabelInput("Right sphere: ", width, false);
 		Rcyl = new LabelInput("Right cylinder: ", width, false);
 		Raxis = new LabelInput("Right axis: ", width, true);
-		Lsph = new LabelInput("Left sphere: ", width, false);
-		Lcyl = new LabelInput("Left cylinder: ", width, false);
-		Laxis = new LabelInput("Left axis: ", width, true);
+		Lsph = new LabelInput("Left sphere:   ", width, false);
+		Lcyl = new LabelInput("Left cylinder:   ", width, false);
+		Laxis = new LabelInput("Left axis:   ", width, true);
 
 		Raxis.getInput().getDocument().putProperty("owner", Raxis);
 		Laxis.getInput().getDocument().putProperty("owner", Laxis);
