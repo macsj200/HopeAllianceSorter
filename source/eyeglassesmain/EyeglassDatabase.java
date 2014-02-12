@@ -2,6 +2,7 @@ package eyeglassesmain;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class EyeglassDatabase {
 	private ArrayList<Glasses> glasses;
@@ -163,6 +164,8 @@ public class EyeglassDatabase {
 			hits.add(glasses.get(i));
 		}
 
+		Collections.sort(hits);
+		
 		return hits;
 	}
 

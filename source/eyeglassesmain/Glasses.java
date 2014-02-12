@@ -1,6 +1,6 @@
 package eyeglassesmain;
 
-public class Glasses {
+public class Glasses implements Comparable{
 	private final int number;
 	private final double Rsph;
 	private final double Rcyl;
@@ -77,5 +77,78 @@ public class Glasses {
 
 	public String getLens() {
 		return lens;
+	}
+
+	public int compareTo(Glasses glasses) {
+		final int BEFORE = 1;
+		final int EQUAL = 0;
+		final int AFTER = -1;
+		
+		if(this == glasses){
+			return EQUAL;
+		}
+		
+		if(Rsph > glasses.getRsph()){
+			return BEFORE;
+		}
+		else if(Rsph < glasses.getRsph()){
+			return AFTER;
+		}
+		else{
+			if(Lsph > glasses.getLsph()){
+				return BEFORE;
+			}
+			else if(Lsph < glasses.getLsph()){
+				return AFTER;
+			}
+			else{
+				if(Raxis > glasses.getRaxis()){
+					return BEFORE;
+				}
+				else if(Raxis < glasses.getRaxis()){
+					return AFTER;
+				}
+				else{
+					if(Laxis > glasses.getLaxis()){
+						return BEFORE;
+					}
+					else if(Laxis < glasses.getLaxis()){
+						return AFTER;
+					}
+					else{
+						if(Rcyl > glasses.getRcyl()){
+							return BEFORE;
+						}
+						else if(Rcyl < glasses.getRcyl()){
+							return AFTER;
+						}
+						else{
+							if(Lcyl > glasses.getLcyl()){
+								return BEFORE;
+							}
+							else if(Lcyl < glasses.getLcyl()){
+								return AFTER;
+							}
+							else{
+								if(number > glasses.getNumber()){
+									return BEFORE;
+								}
+								else if(number < glasses.getNumber()){
+									return AFTER;
+								}
+								else{
+									return EQUAL;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return compareTo((Glasses) o);
 	}
 }

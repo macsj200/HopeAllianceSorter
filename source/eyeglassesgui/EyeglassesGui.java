@@ -46,6 +46,7 @@ public class EyeglassesGui extends JFrame{
 	private JScrollPane outputScrollPane;
 	private JButton loadNewFileButton;
 	private JPanel filePanel;
+	private JButton clearButton;
 	private JLabel fileLabel;
 	private BufferedImage logoImage;
 	private JPanel logoPanel;
@@ -136,6 +137,7 @@ public class EyeglassesGui extends JFrame{
 					@Override
 					public void run(){
 						numberOfResultsLabel.setText("Number of results: N/A");
+						outputTable.setModel(new GlassesTableModel(new ArrayList<Glasses>()));
 						searchButton.setEnabled(true);
 					}
 				});
@@ -211,6 +213,21 @@ public class EyeglassesGui extends JFrame{
 			}
 
 		});
+		
+		clearButton = new JButton("Clear rx");
+		
+		clearButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent ae){
+				Rsph.getInput().setText("");
+				Rcyl.getInput().setText("");
+				Raxis.getInput().setText("");
+				Lsph.getInput().setText("");
+				Lcyl.getInput().setText("");
+				Laxis.getInput().setText("");
+			}
+		});
 
 		filePanel = new JPanel();
 
@@ -242,6 +259,7 @@ public class EyeglassesGui extends JFrame{
 		getContentPane().add(logoPanel);
 		getContentPane().add(inputPanel);
 		getContentPane().add(outputScrollPane);
+		getContentPane().add(clearButton);
 		getContentPane().add(searchButton);
 		getContentPane().add(numberOfResultsLabel);
 		getContentPane().add(filePanel);
