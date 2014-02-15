@@ -78,22 +78,20 @@ public class EyeglassDatabase {
 
 			if(rcyl == 0 || rcyl + 0.25 == 0 || rcyl + 0.5 == 0 || rcyl + 0.75 == 0){
 				if((glasses.get(i).getRaxis()) != 0){
-					continue;
-				}
-
-				if(raxis + 20 > 180){
-					if(!(glasses.get(i).getRaxis() <= raxis + 20 - 180 || glasses.get(i).getRaxis() >= raxis - 20)){
-						continue;
+					if(raxis + 20 > 180){
+						if(!(glasses.get(i).getRaxis() <= raxis + 20 - 180 || glasses.get(i).getRaxis() >= raxis - 20)){
+							continue;
+						}
 					}
-				}
-				else if(raxis - 20 < 0){
-					if(!(glasses.get(i).getRaxis() <= raxis + 20 || glasses.get(i).getRaxis() >= raxis - 20 + 180)){
-						continue;
+					else if(raxis - 20 < 0){
+						if(!(glasses.get(i).getRaxis() <= raxis + 20 || glasses.get(i).getRaxis() >= raxis - 20 + 180)){
+							continue;
+						}
 					}
-				}
-				else{
-					if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20)){
-						continue;
+					else{
+						if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20)){
+							continue;
+						}
 					}
 				}
 			}
@@ -140,27 +138,23 @@ public class EyeglassDatabase {
 
 			if(lcyl == 0 || lcyl + 0.25 == 0 || lcyl + 0.5 == 0 || lcyl + 0.75 == 0){
 				if(glasses.get(i).getLaxis() != 0){
-					continue;
-				}
-
-				if(laxis + 20 > 180){
-					if(!(glasses.get(i).getLaxis() <= laxis + 20 - 180 || glasses.get(i).getLaxis() >= laxis - 20)){
-						continue;
+					if(laxis + 20 > 180){
+						if(!(glasses.get(i).getLaxis() <= laxis + 20 - 180 || glasses.get(i).getLaxis() >= laxis - 20)){
+							continue;
+						}
 					}
-				}
-				else if(laxis - 20 < 0){
-					if(!(glasses.get(i).getLaxis() <= laxis + 20 || glasses.get(i).getLaxis() >= laxis - 20 + 180)){
-						continue;
+					else if(laxis - 20 < 0){
+						if(!(glasses.get(i).getLaxis() <= laxis + 20 || glasses.get(i).getLaxis() >= laxis - 20 + 180)){
+							continue;
+						}
 					}
-				}
-				else{
-					if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20)){
-						continue;
+					else{
+						if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20)){
+							continue;
+						}
 					}
 				}
 			}
-
-
 
 			hits.add(glasses.get(i));
 		}
