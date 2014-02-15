@@ -75,8 +75,14 @@ public class EyeglassDatabase {
 			}
 
 			raxis = raxis % 180;
+			
+			if(rcyl == 0){
+				if(glasses.get(i).getRaxis() != 0 && glasses.get(i).getRcyl() != 0){
+					continue;
+				}
+			}
 
-			if(rcyl == 0 || rcyl + 0.25 == 0 || rcyl + 0.5 == 0 || rcyl + 0.75 == 0){
+			if(rcyl + 0.25 == 0 || rcyl + 0.5 == 0 || rcyl + 0.75 == 0){
 				if((glasses.get(i).getRaxis()) != 0){
 					if(raxis + 20 > 180){
 						if(!(glasses.get(i).getRaxis() <= raxis + 20 - 180 || glasses.get(i).getRaxis() >= raxis - 20)){
@@ -135,6 +141,12 @@ public class EyeglassDatabase {
 			}
 
 			laxis = laxis % 180;
+			
+			if(lcyl == 0){
+				if(glasses.get(i).getLaxis() != 0 && glasses.get(i).getLcyl() != 0){
+					continue;
+				}
+			}
 
 			if(lcyl == 0 || lcyl + 0.25 == 0 || lcyl + 0.5 == 0 || lcyl + 0.75 == 0){
 				if(glasses.get(i).getLaxis() != 0){
