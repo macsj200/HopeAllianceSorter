@@ -75,7 +75,7 @@ public class EyeglassDatabase {
 			}
 
 			raxis = raxis % 180;
-			
+
 			if(rcyl == 0){
 				if(glasses.get(i).getRaxis() != 0 && glasses.get(i).getRcyl() != 0){
 					continue;
@@ -84,20 +84,23 @@ public class EyeglassDatabase {
 
 			if(rcyl + 0.25 == 0 || rcyl + 0.5 == 0 || rcyl + 0.75 == 0){
 				if((glasses.get(i).getRaxis()) != 0){
-					if(raxis + 20 > 180){
-						if(!(glasses.get(i).getRaxis() <= raxis + 20 - 180 || glasses.get(i).getRaxis() >= raxis - 20)){
-							continue;
-						}
+
+				}
+			}
+			else{
+				if(raxis + 20 > 180){
+					if(!(glasses.get(i).getRaxis() <= raxis + 20 - 180 || glasses.get(i).getRaxis() >= raxis - 20)){
+						continue;
 					}
-					else if(raxis - 20 < 0){
-						if(!(glasses.get(i).getRaxis() <= raxis + 20 || glasses.get(i).getRaxis() >= raxis - 20 + 180)){
-							continue;
-						}
+				}
+				else if(raxis - 20 < 0){
+					if(!(glasses.get(i).getRaxis() <= raxis + 20 || glasses.get(i).getRaxis() >= raxis - 20 + 180)){
+						continue;
 					}
-					else{
-						if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20)){
-							continue;
-						}
+				}
+				else{
+					if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20)){
+						continue;
 					}
 				}
 			}
@@ -141,7 +144,7 @@ public class EyeglassDatabase {
 			}
 
 			laxis = laxis % 180;
-			
+
 			if(lcyl == 0){
 				if(glasses.get(i).getLaxis() != 0 && glasses.get(i).getLcyl() != 0){
 					continue;
@@ -164,6 +167,23 @@ public class EyeglassDatabase {
 						if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20)){
 							continue;
 						}
+					}
+				}
+			}
+			else{
+				if(laxis + 20 > 180){
+					if(!(glasses.get(i).getLaxis() <= laxis + 20 - 180 || glasses.get(i).getLaxis() >= laxis - 20)){
+						continue;
+					}
+				}
+				else if(laxis - 20 < 0){
+					if(!(glasses.get(i).getLaxis() <= laxis + 20 || glasses.get(i).getLaxis() >= laxis - 20 + 180)){
+						continue;
+					}
+				}
+				else{
+					if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20)){
+						continue;
 					}
 				}
 			}
