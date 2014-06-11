@@ -31,164 +31,80 @@ public class EyeglassDatabase {
 			double lcyl, int laxis){
 		ArrayList<Glasses> hits = new ArrayList<Glasses>();
 
-		//Iterate through existing glasses
-		for(int i = 0; i < glasses.size(); i++){
+		int searches = 0;
 
-			/*If rcyl of glasses is not between rcyl parameter and rcyl parameter + 0.75 filter out*/
-			if(!isBetween(glasses.get(i).getRcyl(), rcyl, rcyl + 0.75)){
-				continue;
-			}
+		ArrayList<Glasses> possibles = null;
+		ArrayList<Glasses> initialPossibles = null;
 
-			if(rsph == 0){
-				/*if rsph search parameter is zero and glasses rsph is not between rsph parameter +/- 0.25 filter out*/
-				if(!isBetween(glasses.get(i).getRsph(), rsph - 0.25, rsph + 0.25)){
+		while(searches <= 4 && hits.size() <= 15){
+			searches++;
+			possibles = new ArrayList<Glasses>();
+			initialPossibles = new ArrayList<Glasses>();
+
+			for(int i = 0; i < glasses.size(); i++){
+				if(!(glasses.get(i).getRcyl() >= rcyl)){
 					continue;
 				}
-			}
-
-			if(rsph > 0){
-				/*if rsph search parameter is greater than zero and glasses rsph is not between rsph parameter and
-				 * rsph parameter - 0.5 filter out
-				 */
-				if(!isBetween(glasses.get(i).getRsph(), rsph - 0.5, rsph)){
+				if(!(glasses.get(i).getLcyl() >= lcyl)){
 					continue;
 				}
-			}
-
-			if(rsph < 0){
-
-				if(isBetween(rcyl, -1.8, -0.8)){
-					if(!isBetween(glasses.get(i).getRsph(), rsph - 0.25, rsph + 0.5)){
-						continue;
-					}
-				}
-				else if(rcyl > -0.8){
-					if(!isBetween(glasses.get(i).getRsph(), rsph, rsph + 0.5)){
-						continue;
-					}
-				}
-				else if(rcyl < -1.8){
-					if(!isBetween(glasses.get(i).getRsph(), rsph - .5, rsph + .5)){
-						continue;
-					}
-				}
-			}
-
-			raxis = raxis % 180;
-
-			if(rcyl == 0){
-				if(glasses.get(i).getRaxis() != 0 && glasses.get(i).getRcyl() != 0){
+				if(!(checkAxis(glasses.get(i).getRaxis(), raxis, 30) || (glasses.get(i).getRaxis() == 0))){
 					continue;
 				}
+				if(!(checkAxis(glasses.get(i).getLaxis(), laxis, 30) || (glasses.get(i).getLaxis() == 0))){
+					continue;
+				}
+
+				initialPossibles.add(glasses.get(i));
 			}
 
-			if(rcyl + 0.25 == 0 || rcyl + 0.5 == 0 || rcyl + 0.75 == 0){
-				if((glasses.get(i).getRaxis()) != 0){
-
+			for(Glasses glasses : initialPossibles){
+				double margin = 0;
+				if(searches == 1){
+					margin = .25;
 				}
-			}
-			else{
-				if(raxis + 20 > 180){
-					if(!(glasses.get(i).getRaxis() <= raxis + 20 - 180 || glasses.get(i).getRaxis() >= raxis - 20)){
-						continue;
-					}
+				else if(searches == 2){
+					margin = .5;
 				}
-				else if(raxis - 20 < 0){
-					if(!(glasses.get(i).getRaxis() <= raxis + 20 || glasses.get(i).getRaxis() >= raxis - 20 + 180)){
-						continue;
-					}
+				else if(searches == 3){
+					margin = .75;
 				}
 				else{
-					if(!isBetween(glasses.get(i).getRaxis(), raxis - 20, raxis + 20)){
+					margin = 1;
+				}
+				
+				if(rsph < 0){
+					if(!(glasses.getRsph() == rsph || 
+							glasses.getRsph() == rsph + margin)){
 						continue;
 					}
 				}
-			}
-
-
-
-			if(!isBetween(glasses.get(i).getLcyl(), lcyl, lcyl + 0.75)){
-				continue;
-			}
-
-			if(lsph == 0){
-				if(!isBetween(glasses.get(i).getLsph(), lsph - 0.25, lsph + 0.25)){
-					continue;
-				}
-			}
-
-			if(lsph > 0){
-				if(!isBetween(glasses.get(i).getLsph(), lsph - 0.5, lsph)){
-					continue;
-				}
-			}
-
-
-			if(lsph < 0){
-
-				if(isBetween(lcyl, -1.8, -0.8)){
-					if(!isBetween(glasses.get(i).getLsph(), lsph - 0.25, lsph + 0.5)){
+				if(rsph > 0){
+					if(!(glasses.getRsph() == rsph || 
+							glasses.getRsph() == rsph - margin)){
 						continue;
 					}
 				}
-				else if(lcyl > -0.8){
-					if(!isBetween(glasses.get(i).getLsph(), lsph, lsph + 0.5)){
+
+				if(lsph < 0){
+					if(!(glasses.getLsph() == lsph || 
+							glasses.getLsph() == lsph + margin)){
 						continue;
 					}
 				}
-				else if(lcyl < -1.8){
-					if(!isBetween(glasses.get(i).getLsph(), lsph - .5, lsph + .5)){
+				if(lsph > 0){
+					if(!(glasses.getLsph() == lsph || 
+							glasses.getLsph() == lsph - margin)){
 						continue;
 					}
 				}
+
+				possibles.add(glasses);
 			}
 
-			laxis = laxis % 180;
 
-			if(lcyl == 0){
-				if(glasses.get(i).getLaxis() != 0 && glasses.get(i).getLcyl() != 0){
-					continue;
-				}
-			}
 
-			if(lcyl == 0 || lcyl + 0.25 == 0 || lcyl + 0.5 == 0 || lcyl + 0.75 == 0){
-				if(glasses.get(i).getLaxis() != 0){
-					if(laxis + 20 > 180){
-						if(!(glasses.get(i).getLaxis() <= laxis + 20 - 180 || glasses.get(i).getLaxis() >= laxis - 20)){
-							continue;
-						}
-					}
-					else if(laxis - 20 < 0){
-						if(!(glasses.get(i).getLaxis() <= laxis + 20 || glasses.get(i).getLaxis() >= laxis - 20 + 180)){
-							continue;
-						}
-					}
-					else{
-						if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20)){
-							continue;
-						}
-					}
-				}
-			}
-			else{
-				if(laxis + 20 > 180){
-					if(!(glasses.get(i).getLaxis() <= laxis + 20 - 180 || glasses.get(i).getLaxis() >= laxis - 20)){
-						continue;
-					}
-				}
-				else if(laxis - 20 < 0){
-					if(!(glasses.get(i).getLaxis() <= laxis + 20 || glasses.get(i).getLaxis() >= laxis - 20 + 180)){
-						continue;
-					}
-				}
-				else{
-					if(!isBetween(glasses.get(i).getLaxis(), laxis - 20, laxis + 20)){
-						continue;
-					}
-				}
-			}
-
-			hits.add(glasses.get(i));
+			hits.addAll(possibles);
 		}
 
 		Collections.sort(hits);
@@ -200,6 +116,27 @@ public class EyeglassDatabase {
 			String lcyl, String laxis){
 		return search(Double.valueOf(rsph), Double.valueOf(rcyl), Integer.valueOf(raxis), 
 				Double.valueOf(lsph), Double.valueOf(lcyl), Integer.valueOf(laxis));
+	}
+
+	public boolean checkAxis(int axis1, int axis2, int range){
+		boolean isWithinRange = false;
+		axis1 = axis1 % 180;
+		axis2 = axis2 % 180;
+
+		if(axis2 + range > 180){
+			isWithinRange = isWithinRange && 
+					(axis1 <= axis2 + range - 180 || axis1 >= axis2 - range);
+		}
+		else if(axis2 - range < 0){
+			isWithinRange = isWithinRange && 
+					(axis1 <= axis2 + range || axis1 >= axis2 - range + 180);
+		}
+		else{
+			isWithinRange = isWithinRange &&
+					(axis1 >= axis2 - range && axis1 <= axis2 + range);
+		}
+
+		return isWithinRange;
 	}
 
 	public boolean isBetween(double num, double low, double high){
