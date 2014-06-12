@@ -3,6 +3,7 @@ package eyeglassesmain;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class EyeglassDatabase {
 	private ArrayList<Glasses> glasses;
@@ -34,12 +35,10 @@ public class EyeglassDatabase {
 		int searches = 0;
 
 		ArrayList<Glasses> possibles = null;
-		ArrayList<Glasses> initialPossibles = null;
 
 		while(searches <= 4 && hits.size() <= 15){
 			searches++;
 			possibles = new ArrayList<Glasses>();
-			initialPossibles = new ArrayList<Glasses>();
 
 			for(int i = 0; i < glasses.size(); i++){
 				if(!(glasses.get(i).getRcyl() >= rcyl)){
@@ -48,17 +47,21 @@ public class EyeglassDatabase {
 				if(!(glasses.get(i).getLcyl() >= lcyl)){
 					continue;
 				}
-				if(!(checkAxis(glasses.get(i).getRaxis(), raxis, 30) || (glasses.get(i).getRaxis() == 0))){
+				if(!(checkAxis(glasses.get(i).getRaxis(), raxis, 30))){
 					continue;
 				}
-				if(!(checkAxis(glasses.get(i).getLaxis(), laxis, 30) || (glasses.get(i).getLaxis() == 0))){
+				if(!(checkAxis(glasses.get(i).getLaxis(), laxis, 30))){
 					continue;
 				}
 
-				initialPossibles.add(glasses.get(i));
+				possibles.add(glasses.get(i));
 			}
 
-			for(Glasses glasses : initialPossibles){
+			Iterator<Glasses> iter = possibles.iterator();
+			
+			while(iter.hasNext()){
+				Glasses glasses = iter.next();
+				
 				double margin = 0;
 				if(searches == 1){
 					margin = .25;
@@ -76,12 +79,14 @@ public class EyeglassDatabase {
 				if(rsph < 0){
 					if(!(glasses.getRsph() == rsph || 
 							glasses.getRsph() == rsph + margin)){
+						iter.remove();
 						continue;
 					}
 				}
 				if(rsph > 0){
 					if(!(glasses.getRsph() == rsph || 
 							glasses.getRsph() == rsph - margin)){
+						iter.remove();
 						continue;
 					}
 				}
@@ -89,24 +94,29 @@ public class EyeglassDatabase {
 				if(lsph < 0){
 					if(!(glasses.getLsph() == lsph || 
 							glasses.getLsph() == lsph + margin)){
+						iter.remove();
 						continue;
 					}
 				}
 				if(lsph > 0){
 					if(!(glasses.getLsph() == lsph || 
 							glasses.getLsph() == lsph - margin)){
+						iter.remove();
 						continue;
 					}
 				}
-
-				possibles.add(glasses);
 			}
 
 
 
-			hits.addAll(possibles);
+			//hits.addAll(possibles);
+			for(Glasses glasses : possibles){
+				if(!hits.contains(glasses)){
+					hits.add(glasses);
+				}
+			}
 		}
-
+		
 		Collections.sort(hits);
 
 		return hits;
