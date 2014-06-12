@@ -9,6 +9,8 @@ public class EyeglassDatabase {
 	private ArrayList<Glasses> glasses;
 
 	public EyeglassDatabase(File file) throws FormattingException{
+		System.out.println(checkAxis(150,179,30));
+		
 		try {
 			glasses = Reader.readFile(file);
 		} catch (FormattingException e) {
@@ -44,12 +46,15 @@ public class EyeglassDatabase {
 				if(!(glasses.get(i).getRcyl() >= rcyl)){
 					continue;
 				}
+				
 				if(!(glasses.get(i).getLcyl() >= lcyl)){
 					continue;
 				}
+				
 				if(!(checkAxis(glasses.get(i).getRaxis(), raxis, 30))){
 					continue;
 				}
+				
 				if(!(checkAxis(glasses.get(i).getLaxis(), laxis, 30))){
 					continue;
 				}
@@ -129,24 +134,27 @@ public class EyeglassDatabase {
 	}
 
 	public boolean checkAxis(int axis1, int axis2, int range){
-		boolean isWithinRange = false;
+		
 		axis1 = axis1 % 180;
-		axis2 = axis2 % 180;
-
+		axis2 = axis2% 180;
+		
 		if(axis2 + range > 180){
-			isWithinRange = isWithinRange && 
-					(axis1 <= axis2 + range - 180 || axis1 >= axis2 - range);
+			if(!(axis1 <= axis2 + range - 180 || axis1 >= axis2 - range)){
+				return false;
+			}
 		}
 		else if(axis2 - range < 0){
-			isWithinRange = isWithinRange && 
-					(axis1 <= axis2 + range || axis1 >= axis2 - range + 180);
+			if(!(axis1 <= axis2 + range || axis1 >= axis2 - range + 180)){
+				return false;
+			}
 		}
 		else{
-			isWithinRange = isWithinRange &&
-					(axis1 >= axis2 - range && axis1 <= axis2 + range);
+			if(!isBetween(axis1, axis2 - range, axis2 + range)){
+				return false;
+			}
 		}
-
-		return isWithinRange;
+		
+		return true;
 	}
 
 	public boolean isBetween(double num, double low, double high){
