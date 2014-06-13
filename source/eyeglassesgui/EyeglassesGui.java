@@ -50,7 +50,6 @@ public class EyeglassesGui extends JFrame{
 	private JLabel fileLabel;
 	private BufferedImage logoImage;
 	private JPanel logoPanel;
-	private Properties prop;
 	private Box rightInputBox;
 	private LabelInput Rsph;
 	private LabelInput Rcyl;
@@ -65,8 +64,6 @@ public class EyeglassesGui extends JFrame{
 
 	public EyeglassesGui(){
 		super("HopeSearch v" + EyeglassesMain.VERSION);
-		File configFile = new File(".config.properties");
-		prop = new Properties();
 
 		fileChooser = new JFileChooser();
 
@@ -77,24 +74,6 @@ public class EyeglassesGui extends JFrame{
 
 		initAndAddComponents();
 		pack();
-
-		try {
-			prop.load(new FileInputStream(configFile));
-			EyeglassesMain.log("Config file exists, reading");
-
-			file = new File(prop.getProperty("filepath"));
-
-			if(file.getParentFile().exists()){
-				fileChooser.setCurrentDirectory(file.getParentFile());
-			}
-
-		} catch (FileNotFoundException e) {
-			EyeglassesMain.log("Couldn't find config", true);
-		} catch (IOException e) {
-			EyeglassesMain.log("Couldn't read config", true);
-		} finally{
-			loadNewFile(file);
-		}
 
 		setVisible(true);
 	}
@@ -346,19 +325,6 @@ public class EyeglassesGui extends JFrame{
 						});
 
 						return;
-					}
-
-					EyeglassesMain.log("Writing path to config: " + legitFile.getAbsolutePath());
-					prop.setProperty("filepath", legitFile.getAbsolutePath());
-
-
-					try {
-						prop.store(new FileOutputStream(".config.properties"), null);
-						EyeglassesMain.log("Stored config");
-					} catch (FileNotFoundException e) {
-						EyeglassesMain.log("Couldn't save config", true);
-					} catch (IOException e) {
-						EyeglassesMain.log("Couldn't save config", true);
 					}
 
 					SwingUtilities.invokeLater(new Runnable(){
