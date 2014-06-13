@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 import eyeglassesgui.EyeglassesGui;
 
 public class EyeglassesMain {
-	public static final String VERSION = "2.34";
+	public static final String VERSION = "2.36";
 
 	public static void main(String[] args){
 		new EyeglassesGui();
