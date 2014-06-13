@@ -38,7 +38,7 @@ public class EyeglassDatabase {
 
 		ArrayList<Glasses> possibles = null;
 
-		while(searches <= 4 && hits.size() <= 15){
+		while(searches <= 8 && hits.size() <= 15){
 			searches++;
 			possibles = new ArrayList<Glasses>();
 
@@ -67,30 +67,28 @@ public class EyeglassDatabase {
 			while(iter.hasNext()){
 				Glasses glasses = iter.next();
 				
-				double margin = 0;
-				if(searches == 1){
-					margin = .25;
-				}
-				else if(searches == 2){
-					margin = .5;
-				}
-				else if(searches == 3){
-					margin = .75;
+				double lmargin = 0.0;
+				double rmargin = 0.0;
+				
+				if(searches <= 7){
+					lmargin = .25 * searches;
+					rmargin = lmargin;
 				}
 				else{
-					margin = 1;
+					rmargin = 1.00;
+					lmargin = 2.00;
 				}
 				
 				if(rsph < 0){
 					if(!(glasses.getRsph() == rsph || 
-							glasses.getRsph() == rsph + margin)){
+							glasses.getRsph() == rsph + rmargin)){
 						iter.remove();
 						continue;
 					}
 				}
 				if(rsph > 0){
 					if(!(glasses.getRsph() == rsph || 
-							glasses.getRsph() == rsph - margin)){
+							glasses.getRsph() == rsph - rmargin)){
 						iter.remove();
 						continue;
 					}
@@ -98,14 +96,14 @@ public class EyeglassDatabase {
 
 				if(lsph < 0){
 					if(!(glasses.getLsph() == lsph || 
-							glasses.getLsph() == lsph + margin)){
+							glasses.getLsph() == lsph + lmargin)){
 						iter.remove();
 						continue;
 					}
 				}
 				if(lsph > 0){
 					if(!(glasses.getLsph() == lsph || 
-							glasses.getLsph() == lsph - margin)){
+							glasses.getLsph() == lsph - lmargin)){
 						iter.remove();
 						continue;
 					}
