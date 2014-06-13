@@ -45,6 +45,7 @@ public class EyeglassesGui extends JFrame{
 	private JTable outputTable;
 	private JScrollPane outputScrollPane;
 	private JButton loadNewFileButton;
+	private JButton noAstigButton;
 	private JPanel filePanel;
 	private JButton clearButton;
 	private JLabel fileLabel;
@@ -195,6 +196,8 @@ public class EyeglassesGui extends JFrame{
 		
 		clearButton = new JButton("Clear rx");
 		
+		noAstigButton = new JButton("No astigmatism");
+		
 		clearButton.addActionListener(new ActionListener(){
 			
 			@Override
@@ -205,6 +208,16 @@ public class EyeglassesGui extends JFrame{
 				Lsph.getInput().setText("");
 				Lcyl.getInput().setText("");
 				Laxis.getInput().setText("");
+			}
+		});
+		
+		noAstigButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent ae){
+				Rcyl.getInput().setText("0.00");
+				Raxis.getInput().setText("0");
+				Lcyl.getInput().setText("0.00");
+				Laxis.getInput().setText("0");
 			}
 		});
 
@@ -238,6 +251,7 @@ public class EyeglassesGui extends JFrame{
 		getContentPane().add(logoPanel);
 		getContentPane().add(inputPanel);
 		getContentPane().add(outputScrollPane);
+		getContentPane().add(noAstigButton);
 		getContentPane().add(clearButton);
 		getContentPane().add(searchButton);
 		getContentPane().add(numberOfResultsLabel);
