@@ -1,6 +1,11 @@
 package eyeglassesmain;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,6 +22,84 @@ public class EyeglassDatabase {
 			throw e;
 		}
 		EyeglassesMain.log("Database read into RAM");
+
+		PrintWriter printer;
+		try {
+			printer = new PrintWriter(new File("/home/macsj200/export.json"));
+			printer.print("{\"glasses\":[");
+			
+			for(int i = 0; i < glasses.size(); i++){
+				Glasses g = glasses.get(i);
+				
+				
+				printer.print("{");
+				printer.print("\"eyes\":[");
+				
+				printer.print("{\"cylinder\":");
+				printer.print(g.getRcyl());
+				printer.print(",");
+				
+				printer.print("\"sphere\":");
+				printer.print(g.getRsph());
+				printer.print(",");
+				
+				printer.print("\"axis\":");
+				printer.print(g.getRaxis());
+				printer.print(",");
+				
+				printer.print("\"position\":");
+				printer.print("\"Right\"}");
+				
+				printer.print(",");
+				
+				printer.print("{\"cylinder\":");
+				printer.print(g.getLcyl());
+				printer.print(",");
+				
+				printer.print("\"sphere\":");
+				printer.print(g.getLsph());
+				printer.print(",");
+				
+				printer.print("\"axis\":");
+				printer.print(g.getLaxis());
+				printer.print(",");
+				
+				printer.print("\"position\":");
+				printer.print("\"Left\"");
+				
+				printer.print("}]");
+				
+				printer.print(",");
+				
+				printer.print("\"frame\":");
+				printer.print("\"" + g.getFrame() + "\"");
+				
+				printer.print(",");
+				
+				printer.print("\"lens\":");
+				printer.print("\"" + g.getLens() + "\"");
+				
+				printer.print(",");
+				
+				printer.print("\"number\":");
+				printer.print(g.getNumber());
+				
+				printer.print("}");
+				
+				if(i != glasses.size() - 1){
+					printer.print(",");
+				}
+				
+				printer.flush();
+			}
+			printer.print("]}");
+			printer.flush();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public ArrayList<Glasses> getGlasses(){
