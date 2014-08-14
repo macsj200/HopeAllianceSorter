@@ -15,7 +15,7 @@ public class EyeglassDatabase {
 
 	public EyeglassDatabase(File file) throws FormattingException{
 		System.out.println(checkAxis(150,179,30));
-		
+
 		try {
 			glasses = Reader.readFile(file);
 		} catch (FormattingException e) {
@@ -23,83 +23,6 @@ public class EyeglassDatabase {
 		}
 		EyeglassesMain.log("Database read into RAM");
 
-		PrintWriter printer;
-		try {
-			printer = new PrintWriter(new File("/home/macsj200/export.json"));
-			printer.print("{\"glasses\":[");
-			
-			for(int i = 0; i < glasses.size(); i++){
-				Glasses g = glasses.get(i);
-				
-				
-				printer.print("{");
-				printer.print("\"eyes\":[");
-				
-				printer.print("{\"cylinder\":");
-				printer.print(g.getRcyl());
-				printer.print(",");
-				
-				printer.print("\"sphere\":");
-				printer.print(g.getRsph());
-				printer.print(",");
-				
-				printer.print("\"axis\":");
-				printer.print(g.getRaxis());
-				printer.print(",");
-				
-				printer.print("\"position\":");
-				printer.print("\"Right\"}");
-				
-				printer.print(",");
-				
-				printer.print("{\"cylinder\":");
-				printer.print(g.getLcyl());
-				printer.print(",");
-				
-				printer.print("\"sphere\":");
-				printer.print(g.getLsph());
-				printer.print(",");
-				
-				printer.print("\"axis\":");
-				printer.print(g.getLaxis());
-				printer.print(",");
-				
-				printer.print("\"position\":");
-				printer.print("\"Left\"");
-				
-				printer.print("}]");
-				
-				printer.print(",");
-				
-				printer.print("\"frame\":");
-				printer.print("\"" + g.getFrame() + "\"");
-				
-				printer.print(",");
-				
-				printer.print("\"lens\":");
-				printer.print("\"" + g.getLens() + "\"");
-				
-				printer.print(",");
-				
-				printer.print("\"number\":");
-				printer.print(g.getNumber());
-				
-				printer.print("}");
-				
-				if(i != glasses.size() - 1){
-					printer.print(",");
-				}
-				
-				printer.flush();
-			}
-			printer.print("]}");
-			printer.flush();
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 
 	public ArrayList<Glasses> getGlasses(){
@@ -129,15 +52,15 @@ public class EyeglassDatabase {
 				if(!(glasses.get(i).getRcyl() >= rcyl)){
 					continue;
 				}
-				
+
 				if(!(glasses.get(i).getLcyl() >= lcyl)){
 					continue;
 				}
-				
+
 				if(!(checkAxis(glasses.get(i).getRaxis(), raxis, 30))){
 					continue;
 				}
-				
+
 				if(!(checkAxis(glasses.get(i).getLaxis(), laxis, 30))){
 					continue;
 				}
@@ -146,13 +69,13 @@ public class EyeglassDatabase {
 			}
 
 			Iterator<Glasses> iter = possibles.iterator();
-			
+
 			while(iter.hasNext()){
 				Glasses glasses = iter.next();
-				
+
 				double lmargin = 0.0;
 				double rmargin = 0.0;
-				
+
 				if(searches <= 7){
 					lmargin = .25 * searches;
 					rmargin = lmargin;
@@ -161,7 +84,7 @@ public class EyeglassDatabase {
 					rmargin = 1.00;
 					lmargin = 2.00;
 				}
-				
+
 				if(rsph < 0){
 					if(!(glasses.getRsph() == rsph || 
 							glasses.getRsph() == rsph + rmargin)){
@@ -202,7 +125,7 @@ public class EyeglassDatabase {
 				}
 			}
 		}
-		
+
 		Collections.sort(hits);
 
 		return hits;
@@ -215,10 +138,10 @@ public class EyeglassDatabase {
 	}
 
 	public boolean checkAxis(int axis1, int axis2, int range){
-		
+
 		axis1 = axis1 % 180;
 		axis2 = axis2% 180;
-		
+
 		if(axis2 + range > 180){
 			if(!(axis1 <= axis2 + range - 180 || axis1 >= axis2 - range)){
 				return false;
@@ -234,7 +157,7 @@ public class EyeglassDatabase {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
