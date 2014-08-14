@@ -1,5 +1,6 @@
 package eyeglassesgui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -7,12 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -37,6 +34,8 @@ import eyeglassesmain.Glasses;
 
 @SuppressWarnings("serial")
 public class EyeglassesGui extends JFrame{
+	private JPanel everythingPanel;
+	private JScrollPane everythingScrollPane;
 	private JPanel inputPanel;
 	private Box leftInputBox;
 	private GlassesTableModel tModel;
@@ -68,9 +67,9 @@ public class EyeglassesGui extends JFrame{
 
 		fileChooser = new JFileChooser();
 
-		getContentPane().setLayout(new FlowLayout());
+		getContentPane().setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		this.setPreferredSize(new Dimension(1050,690));
 
 		initAndAddComponents();
@@ -126,6 +125,11 @@ public class EyeglassesGui extends JFrame{
 	}
 
 	private void initAndAddComponents(){
+		everythingPanel = new JPanel();
+		everythingScrollPane = new JScrollPane(everythingPanel);
+		
+		everythingPanel.setLayout(new WrapLayout());
+		
 		logoImage = null;
 
 		try {
@@ -246,16 +250,18 @@ public class EyeglassesGui extends JFrame{
 		
 		outputScrollPane = new JScrollPane(outputTable);
 		
-		outputScrollPane.setPreferredSize(new Dimension(1000, 400));
+		everythingPanel.setPreferredSize(new Dimension(950,640));
 
-		getContentPane().add(logoPanel);
-		getContentPane().add(inputPanel);
-		getContentPane().add(outputScrollPane);
-		getContentPane().add(noAstigButton);
-		getContentPane().add(clearButton);
-		getContentPane().add(searchButton);
-		getContentPane().add(numberOfResultsLabel);
-		getContentPane().add(filePanel);
+		everythingPanel.add(logoPanel);
+		everythingPanel.add(inputPanel);
+		everythingPanel.add(outputScrollPane);
+		everythingPanel.add(noAstigButton);
+		everythingPanel.add(clearButton);
+		everythingPanel.add(searchButton);
+		everythingPanel.add(numberOfResultsLabel);
+		everythingPanel.add(filePanel);
+		
+		getContentPane().add(everythingScrollPane, BorderLayout.CENTER);
 	}
 
 	public ArrayList<Glasses> searchAndCompare(){
