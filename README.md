@@ -1,5 +1,6 @@
 HopeSearch
 ==================
+This is an app to speed up [the Hope Alliance](http://www.thehopealliance.org/)'s eyeglasses distribution program. Before having this app, the organization needed to sort through an excel database manually. Now the computer can do this for them automatically.
 
 A program to search an excel database of eyeglass prescriptions.
 
